@@ -26,11 +26,11 @@ const MenuList = () => {
                             <li className="row-span-2 items-center justify-center">
                                 <NavigationMenuLink asChild>
                                     <a
-                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-accent hover:bg-muted from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                                         href="/"
                                     >
 
-                                        <div className="mb-2 mt-4 text-lg font-medium">
+                                        <div className="mb-2 mt-4 font-medium text-primary">
                                             ArtesaniasBGA
                                         </div>
                                         <p className="text-sm leading-tight text-muted-foreground">
@@ -39,10 +39,10 @@ const MenuList = () => {
                                     </a>
                                 </NavigationMenuLink>
                             </li>
-                            <ListItem href="/shop" title="Tienda">
+                            <ListItem href="/shop" title="Tienda" className="text-primary">
                                 Explora nuestra selección de productos disponibles y descubre lo que ofrecemos en nuestra tienda.
                             </ListItem>
-                            <ListItem href="/offers" title="Ofertas">
+                            <ListItem href="/offers" title="Ofertas" className="text-primary">
                                 Sección dedicada a promociones y descuentos especiales
                             </ListItem>
                         </ul>
@@ -120,12 +120,12 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-accent hover:bg-muted hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ",
                         className
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">{title}</div>
+                    <div className="text-primary font-medium leading-none">{title}</div>
                     <p className="text-sm leading-snug text-muted-foreground">
                         {children}
                     </p>
