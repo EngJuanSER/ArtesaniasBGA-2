@@ -1,16 +1,15 @@
-import { ProductType } from "@/types/product";
+import { CategoryType } from "@/types/category";
 import { ResponseType } from "@/types/response";
 import { useEffect, useState } from "react";
 
-
-export function useGetFeaturedProducts(): ResponseType<ProductType> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products?filters[isFeatured][$eq]=true&populate=*`;
-  const [result, setResult] = useState<ProductType[] | null>(null);
+export function useGetCategories(): ResponseType<CategoryType> {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories?populate=*`;
+  const [result, setResult] = useState<CategoryType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    const fetchFeaturedProducts = async () => {
+    const fetchCategories = async () => {
       try {
         const res = await fetch(url);
         if (!res.ok) {
@@ -25,7 +24,7 @@ export function useGetFeaturedProducts(): ResponseType<ProductType> {
       }
     };
 
-    fetchFeaturedProducts();
+    fetchCategories();
   }, [url]);
 
   return { result, loading, error };

@@ -9,7 +9,7 @@ export type ProductType = {
   origin: string;
   price: number;
   images: ImageType[];
-  category: CategoryType | null; // Puede ser null si no está poblado
+  category: CategoryType | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -23,7 +23,7 @@ export type ImageType = {
   caption: string | null;
   width: number;
   height: number;
-  formats: FormatType | null; // Puede ser null si no hay formatos disponibles
+  formats: FormatType | null;
   hash: string;
   ext: string;
   mime: string;

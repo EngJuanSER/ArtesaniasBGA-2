@@ -22,11 +22,11 @@ const MenuList = () => {
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Sobre nosotros</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] items-center">
+                        <ul className="grid gap-2 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] items-center">
                             <li className="row-span-2 items-center justify-center">
                                 <NavigationMenuLink asChild>
                                     <a
-                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-accent hover:bg-muted from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-accent hover:bg-muted from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md "
                                         href="/"
                                     >
 

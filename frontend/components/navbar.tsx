@@ -11,7 +11,7 @@ const Navbar = () => {
     return (
         <nav className="flex items-center justify-between p-4 mx-auto sm:max-w-4xl md:max-w-6xl">
             <h1 
-                className="text-3xl cursor-pointer text-primary hover:text-white transition-colors duration-100" 
+                className="text-3xl cursor-pointer text-primary hover:text-white  transition-colors duration-100" 
                 onMouseEnter={() => {}}
                 onClick={() => router.push("/")}
                 aria-label="Inicio"
@@ -37,6 +37,7 @@ const Navbar = () => {
                     )) }
                 </span>
             </h1>
+            
             <div className="items-center justify-between hidden sm:flex">
                 <MenuList />
             </div>

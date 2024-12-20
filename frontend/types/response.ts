@@ -1,7 +1,5 @@
-import { ProductType } from "./product";
-
-export type ResponseType = {
-  result: ProductType[] | null;
+export type ResponseType<T> = {
+  result: T[] | null;
   loading: boolean;
   error: string;
 };
