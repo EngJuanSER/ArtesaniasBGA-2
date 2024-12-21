@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 @layer base {
   :root {
     --background: 30 22% 60%;
@@ -65,4 +67,26 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--accent));
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--destructive));
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+  }
+  .dark ::-webkit-scrollbar-track {
+    background: hsl(var(--accent));
+  }
+
 }

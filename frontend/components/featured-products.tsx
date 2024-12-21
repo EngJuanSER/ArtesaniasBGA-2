@@ -1,6 +1,4 @@
-// frontend/components/featured-products.tsx
 
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useGetFeaturedProducts } from "@/api/useGetFeaturedProducts";
@@ -99,11 +97,6 @@ const FeaturedProducts = () => {
                           </p>
                         </div>
                       </div>
-{/*                       <div className="px-8 pb-4">
-                        <p className="mt-2 text-xl text-gray-900 dark:text-gray-100">
-                          ${price.toLocaleString('es-CO')}
-                        </p>
-                      </div> */}
                     </Card>
                   </div>
                 </CarouselItem>

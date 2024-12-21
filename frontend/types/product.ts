@@ -51,10 +51,8 @@ export type FormatType = {
 };
 
 export type CategoryType = {
-  data: {
-    attributes: {
-      slug: string;
-      categoryName: string;
-    };
-  };
+
+    slug: string;
+    categoryName: string;
+
 };
