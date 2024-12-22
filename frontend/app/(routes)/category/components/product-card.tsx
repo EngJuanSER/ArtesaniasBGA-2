@@ -21,11 +21,6 @@ const ProductCard = (props: ProductCardProps) => {
     const { product } = props;
     const router = useRouter();
 
-    const firstImage = product.images[0];
-    const imageUrl = firstImage?.url
-        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${firstImage.url}`
-        : "/ruta/a/imagen/default.jpg";
-
     return (
         <Link
             href={`/product/${product.slug}`}

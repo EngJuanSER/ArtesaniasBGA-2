@@ -18,14 +18,6 @@ export default function Page() {
   
     const { filteredProducts, setFilters } = useProductFilter(result || []);
 
-    if (loading) {
-        return (
-            <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
-                <SkeletonSchema grid={3}/>
-            </div>
-        );
-    }
-
     if (error) {
         return (
             <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
@@ -50,18 +42,20 @@ export default function Page() {
                 }}
                 />
 
-            <div className="grid gap-5 mt-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
+                <div className="grid gap-5 mt-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
+                          
+                    {loading &&(<SkeletonSchema grid={3}/>)} 
 
-            {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-                ))
-            ) : (
-                <p>No hay productos con este filtro.</p>
-            )}
+                    {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                        ))
+                    ) : filteredProducts.length == 0 && result &&(
+                        <p>No hay productos con estos filtro.</p>
+                    )}
 
+                </div>
             </div>
-        </div>
         </div>
     );
 }
