@@ -1,43 +1,37 @@
 import { useState, useEffect } from "react";
-import { loginUser, logoutUser, registerUser, AuthResponse } from "@/services/authService";
-
-type User = {
-  id: number;
-  username: string;
-  email: string;
-  jwt: string;
-  [key: string]: any;
-};
+import { loginUser, logoutUser, registerUser, User } from "@/services/authService";
+import { fetcher } from "@/services/apiService";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState("");
 
-  // Al montar el hook, verificamos si hay token en localStorage
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Podrías decodificarlo o llamar a un endpoint /users/me para obtener
-      // la info del usuario y setear el state.
-      // Por simplicidad, aquí no se implementa esa llamada.
-      // Ejemplo:
-      // fetcher("/api/users/me").then(res => setUser({...res, jwt: token}))
+    // Llamamos a /api/users/me en Strapi, que verifica la cookie en cada request
+    // y retorna la info del usuario si la cookie es válida
+    async function fetchUser() {
+      try {
+        const res = await fetcher("/api/users/me", { credentials: "include" });
+        setUser(res); // Strapi retorna info del user si la cookie JWT es válida
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
+    fetchUser();
   }, []);
 
   async function login(email: string, password: string) {
     try {
       setLoading(true);
       setError("");
-      const data: AuthResponse = await loginUser(email, password);
-      // Guardar token en localStorage
-      localStorage.setItem("token", data.jwt);
-      // Actualizamos user
-      setUser({ ...data.user, jwt: data.jwt });
+      const userData = await loginUser(email, password);
+      setUser(userData);
     } catch (err: any) {
       setError(err.message || "Error de login");
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -47,18 +41,18 @@ export function useAuth() {
     try {
       setLoading(true);
       setError("");
-      const data: AuthResponse = await registerUser(username, email, password);
-      localStorage.setItem("token", data.jwt);
-      setUser({ ...data.user, jwt: data.jwt });
+      const userData = await registerUser(username, email, password);
+      setUser(userData);
     } catch (err: any) {
       setError(err.message || "Error de registro");
+      setUser(null);
     } finally {
       setLoading(false);
     }
   }
 
-  function logout() {
-    logoutUser();
+  async function logout() {
+    await logoutUser();
     setUser(null);
   }
 
