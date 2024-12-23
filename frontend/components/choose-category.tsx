@@ -1,9 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
-import { useGetCategories } from "@/api/getProducts";
-import Link from "next/link";
-import { CategoryType } from "@/types/category";
+
+import { useGetCategories } from "@/hooks/useGetCategories"; 
 import { ResponseType } from "@/types/response";
+import { CategoryType } from "@/types/category";
 
 const ChooseCategory = () => {
   const { result, loading, error }: ResponseType<CategoryType> = useGetCategories();

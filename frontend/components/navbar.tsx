@@ -1,6 +1,7 @@
 "use client"
 import { Heart, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import MenuList from "@/components/menu-list";
 import ItemsMenuMobile from "@/components/items-menu-mobile";
 import ToggleTheme from "./toggle-theme";
@@ -57,13 +58,62 @@ const Navbar = () => {
                     onClick={() => router.push("/wishlist")}
                     aria-label="Lista de Deseos"
                 />
-                <User 
-                    strokeWidth={1} 
-                    className="cursor-pointer text-primary transition-colors duration-200 hover:text-white " 
-                    onClick={() => router.push("/profile")}
-                    aria-label="Perfil de Usuario"
-                />
-
+                 <div className="relative">
+                        <User
+                            strokeWidth={1}
+                            className="cursor-pointer text-primary transition-colors duration-200 hover:text-white"
+                            onClick={handleUserIconClick}
+                        />
+                        {userMenuOpen && (
+                            <div className="absolute right-0 w-40 bg-white border rounded-md py-2 shadow-md z-10">
+                            {/* Si hay user logueado */}
+                            {user ? (
+                                <>
+                                <button
+                                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    onClick={() => {
+                                    router.push("/profile");
+                                    setUserMenuOpen(false);
+                                    }}
+                                >
+                                    Mi Perfil
+                                </button>
+                                <button
+                                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    onClick={() => {
+                                    logout(); // cierra sesión
+                                    setUserMenuOpen(false);
+                                    router.push("/");
+                                    }}
+                                >
+                                    Cerrar Sesión
+                                </button>
+                                </>
+                            ) : (
+                                <>
+                                <button
+                                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    onClick={() => {
+                                    router.push("/login");
+                                    setUserMenuOpen(false);
+                                    }}
+                                >
+                                    Iniciar Sesión
+                                </button>
+                                <button
+                                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    onClick={() => {
+                                    router.push("/register");
+                                    setUserMenuOpen(false);
+                                    }}
+                                >
+                                    Registrarse
+                                </button>
+                                </>
+                            )}
+                            </div>
+                        )}
+                    </div>
                 <ToggleTheme />
             </div>
         </nav>

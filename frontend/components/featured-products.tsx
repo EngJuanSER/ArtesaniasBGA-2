@@ -1,29 +1,24 @@
 
 "use client";
 
-import { useGetFeaturedProducts } from "@/api/useGetFeaturedProducts";
+import { useRouter } from "next/navigation";
+import { useGetFeaturedProducts } from "@/hooks/useGetFeaturedProducts"; // <— nuevo hook
 import { ResponseType } from "@/types/response";
+import { ProductType } from "@/types/product";
+import SkeletonSchema from "./skeletonSchema";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
-import SkeletonSchema from "./skeletonSchema";
-import { ProductType } from "@/types/product";
-import { Card, CardContent } from "./ui/card";
-import { Expand, ShoppingCart } from "lucide-react";
-import IconButton from "./icon-button";
-import { useRouter } from "next/navigation";
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 const FeaturedProducts = () => {
   const { result, loading, error }: ResponseType<ProductType> = useGetFeaturedProducts();
   const router = useRouter();
 
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
-  }
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-8 sm:px-24">
@@ -46,7 +41,7 @@ const FeaturedProducts = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {loading && <SkeletonSchema grid={3} />}
           {!loading && result && result.length > 0 ? (
-            result.map((product: ProductType) => {
+            result.map((product: ProductType) => (
               const { id, slug, images, productName, origin, description, price } = product;
 
               if (!slug || !images || !productName || !origin) {
@@ -101,9 +96,9 @@ const FeaturedProducts = () => {
                   </div>
                 </CarouselItem>
               );
-            })
+            ))
           ) : (
-            !loading && <div>No hay productos destacados disponibles.</div>
+            !loading && <p>No hay destacados</p>
           )}
         </CarouselContent>
         <CarouselPrevious />
