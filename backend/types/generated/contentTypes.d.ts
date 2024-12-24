@@ -917,10 +917,10 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
+    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    cellphone: Schema.Attribute.BigInteger;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;

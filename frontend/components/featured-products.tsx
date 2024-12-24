@@ -1,39 +1,45 @@
+// frontend/components/featured-products.tsx
 
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useGetFeaturedProducts } from "@/hooks/useGetFeaturedProducts"; // <— nuevo hook
+import { useGetFeaturedProducts } from "@/hooks/useGetFeaturedProducts";
 import { ResponseType } from "@/types/response";
-import { ProductType } from "@/types/product";
-import SkeletonSchema from "./skeletonSchema";
 import {
   Carousel,
   CarouselContent,
-  CarouselPrevious,
+  CarouselItem,
   CarouselNext,
-} from "@/components/ui/carousel";
+  CarouselPrevious,
+} from "./ui/carousel";
+import SkeletonSchema from "./skeletonSchema";
+import { ProductType } from "@/types/product";
+import { Card, CardContent } from "./ui/card";
+import { Expand, ShoppingCart } from "lucide-react";
+import IconButton from "./icon-button";
+import { useRouter } from "next/navigation";
 
 const FeaturedProducts = () => {
   const { result, loading, error }: ResponseType<ProductType> = useGetFeaturedProducts();
   const router = useRouter();
 
-  if (error) return <div className="text-red-500">Error: {error}</div>;
-
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-8 sm:px-24">
-      <h3 
+      <h3
         className="w-max px-6 font-semibold text-3xl sm:pb-6 text-primary hover:text-white transition-colors duration-100"
         aria-label="Productos destacados"
-        onMouseEnter={() => {}}
       >
-        {"Productos destacados".split("").map((char: string, index: number) => (
-          <span 
-        key={index}
-        className="inline-block transition-colors duration-100"
-        style={{ transitionDelay: `${index * 35}ms` }}
+        {"Productos destacados".split("").map((char, index) => (
+          <span
+            key={index}
+            className="inline-block transition-colors duration-100"
+            style={{ transitionDelay: `${index * 35}ms` }}
           >
-        {char === " " ? "\u00A0" : char}
+            {char === " " ? "\u00A0" : char}
           </span>
         ))}
       </h3>
@@ -41,8 +47,8 @@ const FeaturedProducts = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {loading && <SkeletonSchema grid={3} />}
           {!loading && result && result.length > 0 ? (
-            result.map((product: ProductType) => (
-              const { id, slug, images, productName, origin, description, price } = product;
+            result.map((product: ProductType) => {
+              const { id, slug, images, productName, origin, price } = product;
 
               if (!slug || !images || !productName || !origin) {
                 console.warn(`El producto con id ${id} tiene datos incompletos.`);
@@ -55,10 +61,7 @@ const FeaturedProducts = () => {
                 : "/ruta/a/imagen/default.jpg";
 
               return (
-                <CarouselItem
-                  key={id}
-                  className="md:basis-1/2 lg:basis-1/3 group"
-                >
+                <CarouselItem key={id} className="md:basis-1/2 lg:basis-1/3 group">
                   <div className="p-1">
                     <Card className="p-4 bg-accent shadow-none hover:shadow-2xl">
                       <CardContent className="relative flex items-center justify-center px-6 py-2">
@@ -87,7 +90,7 @@ const FeaturedProducts = () => {
                       <div className="flex justify-between gap-4 px-8 py-2">
                         <h3 className="text-lg text-destructive font-bold">{productName}</h3>
                         <div className="flex items-center justify-between gap-3">
-                          <p className="px-2 py-1 text-accent dark:text-primary bg-primary  dark:bg-background rounded-full w-max">
+                          <p className="px-2 py-1 text-accent dark:text-primary bg-primary dark:bg-background rounded-full w-max">
                             {origin}
                           </p>
                         </div>
@@ -96,9 +99,9 @@ const FeaturedProducts = () => {
                   </div>
                 </CarouselItem>
               );
-            ))
+            })
           ) : (
-            !loading && <p>No hay destacados</p>
+            !loading && <div>No hay productos destacados disponibles.</div>
           )}
         </CarouselContent>
         <CarouselPrevious />

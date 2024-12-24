@@ -3,6 +3,8 @@
 import { useGetCategories } from "@/hooks/useGetCategories"; 
 import { ResponseType } from "@/types/response";
 import { CategoryType } from "@/types/category";
+import Link from "next/link";
+
 
 const ChooseCategory = () => {
   const { result, loading, error }: ResponseType<CategoryType> = useGetCategories();
