@@ -1,0 +1,13 @@
+# Use the universal base image for dev containers
+FROM mcr.microsoft.com/devcontainers/universal:2
+
+# Install PostgreSQL client
+RUN apt-get update && apt-get install -y postgresql-client-14
+
+# Set environment variables for PostgreSQL
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=123456
+ENV POSTGRES_DB=artesanias
+
+# Expose the PostgreSQL port
+EXPOSE 5432
