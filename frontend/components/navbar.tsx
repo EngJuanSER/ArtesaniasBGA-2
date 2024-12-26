@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import MenuList from "@/components/menu-list";
 import ItemsMenuMobile from "@/components/items-menu-mobile";
 import ToggleTheme from "./toggle-theme";
+import { getUserMeLoader } from "@/services/userService";
+
 
 const NavbarActions = () => {
   const router = useRouter();

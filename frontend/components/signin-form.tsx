@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useActionState } from "react";
+import { loginUserAction } from "@/data/actions/auth-actions";
 
 import {
   CardTitle,
@@ -13,11 +15,23 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ZodErrors } from "@/components/zod-errors";
+import { StrapiErrors } from "@/components/strapi-errors";
+import { SubmitButton } from "@/components/submit-button";
+
+const INITIAL_STATE = {
+  zodErrors: null,
+  strapiErrors: null,
+  data: null,
+  message: null,
+};
 
 export function SigninForm() {
+  const [formState, formAction] = useActionState(loginUserAction, INITIAL_STATE);
+
   return (
     <div className="max-w-md mx-auto flex items-center justify-center py-5">
-      <form>
+      <form action={formAction}>
         <Card className="bg-popover border-primary">
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold text-primary">Iniciar Sesión</CardTitle>
@@ -27,7 +41,7 @@ export function SigninForm() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2 text-primary">
-              <Label htmlFor="email">Correo Electrónico</Label>
+              <Label htmlFor="identifier">Correo Electrónico</Label>
               <Input
                 id="identifier"
                 name="identifier"
@@ -35,6 +49,7 @@ export function SigninForm() {
                 placeholder="nombre de usuario o correo electrónico"
                 className="border-primary"
               />
+              <ZodErrors error={formState?.zodErrors?.identifier} />
             </div>
             <div className="space-y-2 text-primary">
               <Label htmlFor="password">Contraseña</Label>
@@ -45,10 +60,16 @@ export function SigninForm() {
                 placeholder="contraseña"
                 className="border-primary"
               />
+              <ZodErrors error={formState?.zodErrors?.password} />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col text-primary">
-            <button className="w-full">Iniciar Sesión</button>
+            <SubmitButton
+              className="w-full"
+              text="Iniciar Sesión"
+              loadingText="Cargando"
+            />
+            <StrapiErrors error={formState?.strapiErrors} />
           </CardFooter>
         </Card>
         <div className="mt-4 text-center text-sm text-primary">

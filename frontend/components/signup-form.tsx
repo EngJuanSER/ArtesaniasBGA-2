@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { registerUserAction } from "@/data/actions/auth-actions";
-
+import { StrapiErrors } from "@/components/strapi-errors";
+import { SubmitButton } from "@/components/submit-button";
 import {
   CardTitle,
   CardDescription,
@@ -75,7 +76,8 @@ export function SignupForm() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <button className="w-full text-primary">Registrarse</button>
+          <SubmitButton className="w-full" text="Registrarse" loadingText="Loading" />
+            <StrapiErrors error={formState?.strapiErrors} />
           </CardFooter>
         </Card>
         <div className="mt-4 text-center text-sm">

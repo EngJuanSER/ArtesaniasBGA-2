@@ -1,30 +1,14 @@
-"use client";
+import { getUserMeLoader } from "@/services/userService";
+import { ProfileForm } from "./components/profile-form";
 
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
-export default function ProfilePage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user, router]);
-
-  if (!user) return null;
+export default async function profileRoute() {
+  const user = await getUserMeLoader();
+  const userData = user.data;
 
   return (
-    <div className="max-w-3xl mx-auto py-8">
-      <h1 className="text-2xl">¡Hola, {user.name || user.email}!</h1>
-      {user.role === "admin" && (
-        <div className="mt-4">
-          <p>Aquí podrías poner enlaces a reportes, etc.</p>
-        </div>
-      )}
-      {/* Agregar más secciones según el rol */}
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 p-4">
+      <ProfileForm data={userData} className="col-span-3" />
     </div>
   );
 }
