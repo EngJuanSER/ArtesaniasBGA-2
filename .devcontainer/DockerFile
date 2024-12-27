@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/devcontainers/universal:2
 
 # Install PostgreSQL client
-RUN apt-get update && apt-get install -y postgresql-client-14
+RUN apt-get update && apt-get install -y postgresql-client
 
 # Set environment variables for PostgreSQL
 ENV POSTGRES_USER=postgres
