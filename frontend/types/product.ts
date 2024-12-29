@@ -13,6 +13,11 @@ export type ProductType = {
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
+  stock: bigint;
+  comments: CommentType[];
+  quantity: bigint;
+  offer: boolean;
+  priceOffer: number;
 };
 
 export type ImageType = {
@@ -51,8 +56,14 @@ export type FormatType = {
 };
 
 export type CategoryType = {
+  slug: string;
+  categoryName: string;
+};
 
-    slug: string;
-    categoryName: string;
-
+export type CommentType = {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
 };

@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 };
 
 export function SignupForm() {
+
   const [formState, formAction] = useActionState(
     registerUserAction,
     INITIAL_STATE

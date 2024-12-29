@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "resenas",
+  "info": {
+    "singularName": "resena",
+    "pluralName": "resenas",
+    "displayName": "Comment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comment": {
+      "type": "text"
+    }
+  }
+}

@@ -71,6 +71,20 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
+    },
+    "stock": {
+      "type": "biginteger"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resena.resena"
+    },
+    "offer": {
+      "type": "boolean"
+    },
+    "priceOffer": {
+      "type": "decimal"
     }
   }
 }

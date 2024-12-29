@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart, BaggageClaim } from "lucide-react";
 import { useRouter } from "next/navigation";
 import MenuList from "@/components/menu-list";
 import ItemsMenuMobile from "@/components/items-menu-mobile";
@@ -23,11 +23,11 @@ const NavbarActions = ({ user }: { user: any | null }) => {
           onClick={() => router.push("/cart")}
           aria-label="Carrito de Compras"
         />
-        {user?.cart_items_count > 0 && (
+{/*         {user?.cart.products.length > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-            {user.cart_items_count}
+            {user.cart.products.length}
           </span>
-        )}
+        )} */}
       </div>
       <div className="relative">
         <Heart

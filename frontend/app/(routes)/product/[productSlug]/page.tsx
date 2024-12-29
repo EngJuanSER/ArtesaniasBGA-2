@@ -9,7 +9,7 @@ import InfoProduct from "./components/info-product";
 export default function Page() {
   const params = useParams();
   const { result, loading, error } = useGetProductBySlug(params.productSlug || "");
-
+  console.log("result", result);
   if (loading || !result) {
     return <SkeletonProduct />
   }
