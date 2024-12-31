@@ -1,17 +1,23 @@
 "use client";
-
-import { CartType } from "@/types/cart";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { CartType } from "@/types/cart";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Plus, Minus, Trash2 } from "lucide-react";
+import { serverUpdateCartItemQuantity, serverDeleteCartItem } from "@/data/actions/cart-actions";
 
-interface Props {
+
+
+interface CartClientProps {
   cart: CartType | null;
 }
 
-export default function CartClient({ cart }: Props) {
+export default function CartClient({ cart }: CartClientProps) {
   const { toast } = useToast();
   const [localCart, setLocalCart] = useState<CartType | null>(cart);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [localQuantities, setLocalQuantities] = useState<{[key: string]: number}>({});
 
   if (!localCart) {
     return (
@@ -31,106 +37,118 @@ export default function CartClient({ cart }: Props) {
     );
   }
 
-  const handleQuantityChange = async (cartItemId: number, newQuantity: number) => {
-    if (newQuantity < 1) {
-      toast({
-        title: "Error",
-        description: "La cantidad debe ser al menos 1.",
-        variant: "destructive"
-      });
+  const handleQuantityAdjust = async (cartItemId: number, currentQuantity: number, increment: boolean) => {
+    const newQuantity = increment ? currentQuantity + 1 : currentQuantity - 1;
+    if (newQuantity < 1 || newQuantity > 999) {
+      toast({ description: "Cantidad inválida" }); 
       return;
     }
-
+  
     setIsUpdating(true);
-
     try {
-      const authToken = localStorage.getItem("authToken"); // Asegúrate de almacenar el token correctamente
-      if (!authToken) {
-        toast({
-          title: "Error",
-          description: "No autenticado",
-          variant: "destructive"
-        });
-        setIsUpdating(false);
-        return;
+      const result = await serverUpdateCartItemQuantity(cartItemId, newQuantity);
+      
+      if (!result.ok) {
+        throw new Error(result.error);
       }
-
-      const response = await fetch(`https://tu-dominio.com/api/cart-items/${cartItemId}`, { // Reemplaza con tu dominio y ruta correcta
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
-        },
-        body: JSON.stringify({ quantity: newQuantity })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "No se pudo actualizar la cantidad");
-      }
-
-      const data = await response.json();
-
-      setLocalCart({
-        ...localCart,
-        total: data.total,
-        cartItems: data.cartItems.map((item: any) => ({
-          id: item.id, // ID del CartItem
-          productId: item.product.id,
-          productName: item.product.productName,
-          price: item.product.offer ? item.product.priceOffer : item.product.price,
-          quantity: item.quantity,
-          offer: item.product.offer,
-          priceOffer: item.product.priceOffer
-        }))
-      });
-
-      toast({
-        title: "Actualizado",
-        description: "Cantidad actualizada en el carrito"
-      });
+  
+      setLocalCart(result.data);
+      toast({ description: "Cantidad actualizada" });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "No se pudo actualizar la cantidad",
-        variant: "destructive"
-      });
+      toast({ description: error.message });
     } finally {
       setIsUpdating(false);
     }
   };
+  
 
+  
+  const handleDeleteItem = async (cartItemId: number) => {
+    if (!cartItemId) return toast({ description: "Slug inválido" });
+
+    setIsUpdating(true);
+    try {
+      const result = await serverDeleteCartItem(cartItemId);
+      
+      if (!result.ok) {
+        throw new Error(result.error);
+      }
+
+      setLocalCart(result.data);
+      toast({ description: "Producto eliminado" });
+    } catch (error: any) {
+      toast({ description: error.message });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+  
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold">Mi Carrito</h1>
       <ul className="divide-y">
-        {localCart.cartItems.map((item) => (
-          <li key={item.id} className="py-4 flex justify-between items-center">
-            <div>
-              <span className="text-lg font-medium">{item.productName}</span>
-              <div className="flex items-center space-x-2 mt-1">
-                <label htmlFor={`quantity-${item.id}`} className="text-sm">Cantidad:</label>
-                <input
-                  type="number"
-                  id={`quantity-${item.id}`}
-                  name="quantity"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
-                  className="border rounded px-2 py-1 w-16"
+        {localCart?.cartItems.map((item) => (
+          <li key={item.id} className="py-6 flex items-center gap-4">
+            <div className="relative w-24 h-24">
+              <Image
+                src={item.images?.[0]?.url || "/placeholder.png"}
+                alt={item.productName}
+                fill
+                className="object-cover rounded-md"
+                unoptimized
+              />
+            </div>
+            
+            <div className="flex-1">
+              <h3 className="font-medium text-lg">{item.productName}</h3>
+              <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityAdjust(item.id, item.quantity, false)}
+                    disabled={isUpdating}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                
+                  <span className="w-12 text-center">{item.quantity}</span>
+                
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityAdjust(item.id, item.quantity, true)}
+                    disabled={isUpdating}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDeleteItem(item.id)}
                   disabled={isUpdating}
-                />
+                >
+                  <Trash2 className="h-5 w-5 text-muted-foreground hover:text-destructive" />
+                </Button>
               </div>
             </div>
-            <span className="font-medium">
-              ${item.offer && item.priceOffer ? (item.priceOffer * item.quantity).toFixed(2) : (item.price * item.quantity).toFixed(2)}
-            </span>
+            
+            <div className="text-right">
+              <span className="font-medium text-lg">
+                ${item.offer && item.priceOffer
+                  ? (item.priceOffer * item.quantity).toFixed(2)
+                  : (item.price * item.quantity).toFixed(2)}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
+      
       <div className="py-4 text-right">
         <span className="text-lg font-bold">
-          Total: ${localCart.total.toFixed(2)}
+          Total: ${localCart?.total.toFixed(2)}
         </span>
       </div>
     </div>

@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { addProductBySlugToCart } from "@/services/cartService";
+import { addProductBySlugToCart, updateCartItemQuantity, deleteCartItem } from "@/services/cartService";
 
 interface CartState {
   ok: boolean;
@@ -14,30 +13,68 @@ export async function serverAddToCartAction(
   formData: FormData
 ): Promise<CartState> {
   try {
-    const authToken = (await cookies()).get("jwt")?.value;
-    if (!authToken) {
-      return { ...prevState, ok: false, error: "No autenticado" };
+    if (!formData || typeof formData.get !== 'function') {
+      return { ok: false, error: "Datos de formulario inválidos" };
     }
 
     const productSlug = formData.get("productSlug") as string;
-    const quantity = formData.get("quantity") ? Number(formData.get("quantity")) : 1;
-
     if (!productSlug) {
-      return { ...prevState, ok: false, error: "Falta productSlug" };
+      return { ok: false, error: "Producto no especificado" };
     }
 
-    if (quantity < 1) {
-      return { ...prevState, ok: false, error: "Cantidad mínima es 1" };
-    }
-
+    const quantity = parseInt(formData.get("quantity") as string, 10) || 1;
     const result = await addProductBySlugToCart(productSlug, quantity);
-    if (result.ok) {
-      revalidatePath("/cart");
-      return { ok: true, error: null };
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
     }
 
-    return { ok: false, error: result.error };
-  } catch {
-    return { ok: false, error: "Error al agregar al carrito" };
+    revalidatePath("/cart");
+    return { ok: true, error: null };
+  } catch (error: any) {
+    return { 
+      ok: false, 
+      error: error.message || "Error al agregar al carrito" 
+    };
+  }
+}
+
+export async function serverUpdateCartItemQuantity(
+  cartItemId: number,
+  quantity: number
+): Promise<{ ok: boolean; error?: string; data?: any }> {
+  try {
+    const result = await updateCartItemQuantity(cartItemId, quantity);
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
+    }
+
+    revalidatePath("/cart");
+    return { ok: true, data: result.data };
+  } catch (error: any) {
+    return { 
+      ok: false, 
+      error: error.message || "Error al actualizar cantidad" 
+    };
+  }
+}
+export async function serverDeleteCartItem(
+  cartItemId: number
+): Promise<{ ok: boolean; error?: string; data?: any }> {
+  try {
+    const result = await deleteCartItem(cartItemId);
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
+    }
+
+    revalidatePath("/cart");
+    return { ok: true, data: result.data };
+  } catch (error: any) {
+    return { 
+      ok: false, 
+      error: error.message || "Error al eliminar producto" 
+    };
   }
 }

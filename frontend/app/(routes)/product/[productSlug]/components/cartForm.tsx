@@ -1,9 +1,10 @@
 "use client";
 
 import { serverAddToCartAction } from "@/data/actions/cart-actions";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { SubmitButton } from "@/components/submit-button";
 import { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
 
 const INITIAL_CART_STATE = {
   ok: false,
@@ -19,8 +20,22 @@ export function AddToCartForm({ productSlug }: AddToCartFormProps) {
     serverAddToCartAction,
     INITIAL_CART_STATE
   );
-
   const [quantity, setQuantity] = useState(1);
+  
+  useEffect(() => {
+    if (cartState.error) {
+      toast({
+        title: "Error",
+        description: cartState.error,
+        variant: "destructive",
+      });
+    } else if (cartState.ok) {
+      toast({
+        title: "Éxito",
+        description: "Producto agregado al carrito",
+      });
+    }
+  }, [cartState]);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);

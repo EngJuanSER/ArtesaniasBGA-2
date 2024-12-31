@@ -21,6 +21,17 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::product.product"
+    },
+    "cart": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cart.cart",
+      "inversedBy": "cartItems"
+    },
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "unique": true
     }
   }
 }

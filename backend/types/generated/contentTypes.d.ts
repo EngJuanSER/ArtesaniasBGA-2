@@ -381,6 +381,7 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    cart: Schema.Attribute.Relation<'manyToOne', 'api::cart.cart'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -400,6 +401,9 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
         string
       > &
       Schema.Attribute.DefaultTo<'1'>;
+    slug: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -430,6 +434,7 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID;
     total: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
