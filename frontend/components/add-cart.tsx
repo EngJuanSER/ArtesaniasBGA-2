@@ -42,7 +42,7 @@ export function AddToCartButton({ productSlug }: AddToCartButtonProps) {
         type="submit"
         variant="ghost"
         size="icon"
-        className="text-primary bg-white rounded-full"
+        className="rounded-full bg-white dark flex items-center text-muted border shadow-md p-2 hover:scale-110 transition"
         aria-label="Añadir al carrito"
       >
         <ShoppingCart size={20} />

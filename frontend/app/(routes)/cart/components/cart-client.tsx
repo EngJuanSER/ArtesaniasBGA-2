@@ -14,6 +14,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { serverUpdateCartItemQuantity, serverDeleteCartItem } from "@/data/actions/cart-actions";
+import { useRouter } from "next/navigation";
+
 
 
 interface CartClientProps {
@@ -21,6 +23,7 @@ interface CartClientProps {
 }
 
 export default function CartClient({ cart }: CartClientProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const [localCart, setLocalCart] = useState<CartType | null>(cart);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
@@ -45,7 +48,7 @@ export default function CartClient({ cart }: CartClientProps) {
   if (localCart.cartItems.length === 0) {
     return (
       <div className="text-center py-10">
-        <h2 className="text-xl font-semibold">Tu carrito está vacío</h2>
+        <h2 className="text-xl font-semibold text-primary">Tu carrito está vacío</h2>
       </div>
     );
   }
@@ -142,12 +145,12 @@ export default function CartClient({ cart }: CartClientProps) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-5/6 items-center justify-center mx-auto">
       <h1 className="text-2xl font-bold text-primary">Mi Carrito</h1>
-      <ul className="divide-y bg-popover p-4 pr-8 rounded-xl">
+      <ul className="divide-y bg-popover p-4 px-14 rounded-xl">
         {localCart?.cartItems.map((item) => (
           <li key={item.id} className="py-6 flex items-center gap-4 text-primary">
-            <div className="relative w-24 h-24">
+            <div className="relative w-44 h-44">
               <Image
                 src={item.images?.[0]?.url || "/placeholder.png"}
                 alt={item.productName}
@@ -157,8 +160,18 @@ export default function CartClient({ cart }: CartClientProps) {
               />
             </div>
             
-            <div className="flex-1">
-              <h3 className="font-medium text-lg">{item.productName}</h3>
+            <div className="flex-1 p-8">
+                <h3 onClick={() => router.push(`/product/${item.productSlug}`)} className="w-max font-medium text-2xl cursor-pointer hover:text-white transition-colors duration-100">
+                {item.productName.split("").map((char, index) => (
+                  <span
+                  key={index}
+                  className="inline-block transition-colors duration-100"
+                  style={{ transitionDelay: `${index * 35}ms` }}
+                  >
+                  {char === " " ? "\u00A0" : char}
+                  </span>
+                ))}
+                </h3>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center gap-2">
                   <Button
@@ -170,7 +183,7 @@ export default function CartClient({ cart }: CartClientProps) {
                     <Minus className="h-4 w-4" />
                   </Button>
                 
-                  <span className="w-12 text-center">
+                  <span className="w-12 text-center font-medium">
                     {localQuantities[item.id] || item.quantity}
                   </span>
                 
@@ -196,7 +209,7 @@ export default function CartClient({ cart }: CartClientProps) {
             </div>
             
             <div className="text-right">
-              <span className="font-medium text-lg">
+              <span className="font-medium text-2xl">
                 ${item.offer && item.priceOffer
                   ? (item.priceOffer * (localQuantities[item.id] || item.quantity)).toFixed(2)
                   : (item.price * (localQuantities[item.id] || item.quantity)).toFixed(2)}
@@ -207,7 +220,7 @@ export default function CartClient({ cart }: CartClientProps) {
       </ul>
       
       <div className="py-4 flex justify-between items-center">
-        <span className="text-lg font-bold text-primary">
+        <span className="text-2xl font-bold text-primary">
           Total: ${calculateTotal(localCart?.cartItems || [], localQuantities)}
         </span>
         

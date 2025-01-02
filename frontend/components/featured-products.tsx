@@ -15,7 +15,7 @@ import {
 import SkeletonSchema from "./skeletonSchema";
 import { ProductType } from "@/types/product";
 import { Card, CardContent } from "./ui/card";
-import { Expand, ShoppingCart } from "lucide-react";
+import { Expand } from "lucide-react";
 import IconButton from "./icon-button";
 import { useRouter } from "next/navigation";
 import { AddToCartButton } from "./add-cart";
@@ -63,7 +63,7 @@ const FeaturedProducts = () => {
 
               return (
                 <CarouselItem key={id} className="md:basis-1/2 lg:basis-1/3 group">
-                  <div className="p-1">
+                  <div className="p-2">
                     <Card className="p-4 bg-accent shadow-none hover:shadow-2xl">
                       <CardContent className="relative flex items-center justify-center px-6 py-2">
                         <img
@@ -76,7 +76,7 @@ const FeaturedProducts = () => {
                             <IconButton
                               onClick={() => router.push(`/product/${slug}`)}
                               icon={<Expand size={20} />}
-                              className="text-primary"
+                              className="dark:text-muted hover:text-white hover:bg-primary dark:hover:text-white"
                               aria-label="Ver más"
                             />
                             <AddToCartButton productSlug={slug} />
