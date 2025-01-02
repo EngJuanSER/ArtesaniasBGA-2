@@ -27,7 +27,7 @@ export function AddToCartForm({ productSlug }: AddToCartFormProps) {
       toast({
         title: "Error",
         description: cartState.error,
-        variant: "destructive",
+        variant: "default",
       });
     } else if (cartState.ok) {
       toast({
@@ -58,9 +58,6 @@ export function AddToCartForm({ productSlug }: AddToCartFormProps) {
         />
       </div>
       <SubmitButton text="Agregar al Carrito" loadingText="Cargando" />
-      {cartState.error && (
-        <p className="text-red-500 text-sm mt-2">Error: {cartState.error}</p>
-      )}
     </form>
   );
 }

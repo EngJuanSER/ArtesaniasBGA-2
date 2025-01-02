@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { addProductBySlugToCart, updateCartItemQuantity, deleteCartItem } from "@/services/cartService";
+import { addProductBySlugToCart, updateCartItemQuantity, deleteCartItem, fetchUserCart } from "@/services/cartService";
 
 interface CartState {
   ok: boolean;
@@ -76,5 +76,15 @@ export async function serverDeleteCartItem(
       ok: false, 
       error: error.message || "Error al eliminar producto" 
     };
+  }
+}
+
+export async function getCartItemsCount(): Promise<number> {
+  try {
+    const cart = await fetchUserCart();
+    return cart?.cartItems.length || 0;
+  } catch (error) {
+    console.error("Error al obtener cantidad de items:", error);
+    return 0;
   }
 }

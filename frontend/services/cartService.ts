@@ -11,7 +11,6 @@ export async function fetchUserCart(): Promise<CartType | null> {
       headers: { Authorization: `Bearer ${authToken}` }
     });
 
-    console.log("prueba xd", data)
     if (data?.data) {
       const cart = Array.isArray(data.data) ? data.data[0] : data.data;
       return {

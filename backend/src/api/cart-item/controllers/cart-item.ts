@@ -12,21 +12,22 @@ module.exports = createCoreController("api::cart-item.cart-item", ({ strapi }) =
       const { id } = ctx.params; // Cambiar a usar el ID de la URL
       const { quantity } = ctx.request.body;
       const quantityNum = parseInt(quantity, 10);
-  
-      console.log("Buscando CartItem con id:", id);
-  
+    
       // Buscar por ID en vez de slug
       const cartItem = await strapi.entityService.findOne("api::cart-item.cart-item", id, {
         populate: {
           cart: {
-            populate: ['user']
+            populate: {
+              cartItems: {
+                populate: ['product']
+              },
+              user: true
+            }
           },
           product: true
         }
       });
-  
-      console.log("CartItem encontrado:", cartItem);
-  
+    
       if (!cartItem) {
         return ctx.notFound(`CartItem no encontrado`);
       }
@@ -36,21 +37,37 @@ module.exports = createCoreController("api::cart-item.cart-item", ({ strapi }) =
         return ctx.unauthorized("No autorizado para modificar este item");
       }
   
-      // Actualizar cantidad
-      const updated = await strapi.entityService.update('api::cart-item.cart-item', cartItem.id, {
-        data: { quantity: quantityNum },
+      // Actualizar cantidad del cartItem
+      await strapi.entityService.update('api::cart-item.cart-item', cartItem.id, {
+        data: { quantity: quantityNum }
+      });
+
+      const updatedCart = await strapi.entityService.findOne('api::cart.cart', cartItem.cart.id, {
         populate: {
-          cart: {
-            populate: {
-              cartItems: {
-                populate: ['product']
-              }
-            }
+          cartItems: {
+            populate: ['product']
           }
         }
       });
+
+      const total = updatedCart.cartItems.reduce((sum: number, item: any) => {
+        const price = Number(item.product.offer ? item.product.priceOffer : item.product.price);
+        const qty = Number(item.quantity);
+        return sum + (price * qty);
+      }, 0);
   
-      return { data: updated };
+      const finalCart = await strapi.entityService.update('api::cart.cart', cartItem.cart.id, {
+        data: { 
+          total: Number(total.toFixed(2))
+        },
+        populate: {
+          cartItems: {
+            populate: ['product']
+          }
+        }
+      });
+
+      return { data: finalCart };
     } catch (error) {
       console.error("Error completo:", error);
       return ctx.badRequest(error.message || "Error al actualizar cantidad");
@@ -62,29 +79,18 @@ module.exports = createCoreController("api::cart-item.cart-item", ({ strapi }) =
       const user = ctx.state.user;
       if (!user) return ctx.unauthorized("No autorizado");
   
-      const { slug } = ctx.params;
-      
-      console.log("Buscando CartItem para eliminar con slug:", slug);
-  
-      // Misma corrección en la búsqueda
-      const cartItems = await strapi.entityService.findMany("api::cart-item.cart-item", {
-        filters: { 
-          slug: {
-            $eq: slug
-          }
-        },
+      const { id } = ctx.params;
+        
+      const cartItem = await strapi.entityService.findOne("api::cart-item.cart-item", id, {
         populate: {
           cart: {
             populate: ['user']
           }
         }
       });
-  
-      const cartItem = cartItems[0];
-      console.log("CartItem encontrado para eliminar:", cartItem);
-  
+    
       if (!cartItem) {
-        return ctx.notFound(`CartItem con slug ${slug} no encontrado`);
+        return ctx.notFound(`CartItem no encontrado`);
       }
   
       if (!cartItem.cart?.user?.id || cartItem.cart.user.id !== user.id) {
