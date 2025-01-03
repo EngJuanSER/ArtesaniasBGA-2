@@ -1,0 +1,50 @@
+@startuml
+
+skinparam component {
+    BackgroundColor White
+    BorderColor Black
+}
+
+skinparam package {
+    BackgroundColor White
+    BorderColor Black
+}
+
+package "Frontend" {
+    component "Interfaz de Usuario\n(Next.js)" as FrontendUI
+}
+
+package "Backend" {
+    component "Strapi Headless CMS\n(Node.js)" as StrapiBackend
+    component "Queue Service\n(Bull)" as QueueService
+    component "Redis Server\n(Redis)" as RedisServer
+}
+
+package "Base de Datos"{
+    component "Base de Datos\n(PostgreSQL)" as Database
+}
+
+package "Servicios Externos" {
+    component "Procesador de Pagos\n(Stripe, PayPal)" as PaymentProcessor
+    component "Servicio de Email\n(SendGrid, Mailgun)" as EmailService
+}
+
+package "Servicios de Tareas" {
+    component "Servicio de Procesamiento de Tareas\n(Bull Workers)" as TaskProcessor
+}
+
+FrontendUI --> StrapiBackend : Solicitudes API
+
+StrapiBackend --> Database : Leer/Escribir Datos
+StrapiBackend --> QueueService : Encolar Tareas Asíncronas
+
+QueueService --> RedisServer : Gestiona Colas
+TaskProcessor --> RedisServer : Escucha Colas
+
+TaskProcessor --> PaymentProcessor : Procesar Pagos
+TaskProcessor --> EmailService : Enviar Emails de Confirmación
+
+PaymentProcessor --> TaskProcessor : Respuesta de Pago
+EmailService --> TaskProcessor : Confirmación de Email
+
+@enduml

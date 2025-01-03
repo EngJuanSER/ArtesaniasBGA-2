@@ -39,10 +39,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
-# documentation
-/doc
-
 # Strapi
 /backend/.tmp
 /backend/build

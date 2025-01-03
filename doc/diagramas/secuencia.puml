@@ -1,0 +1,55 @@
+@startuml DiagramaSecuencia
+actor Cliente
+participant "Interfaz de Usuario\n(Next.js)" as Frontend
+participant "Strapi Headless CMS\n(Node.js)" as Backend
+database "Base de Datos\n(PostgreSQL)" as Database
+participant "Servicio de Pago\n(Stripe, PayPal)" as PaymentService
+participant "Servicio de Email\n(SendGrid, Mailgun)" as EmailService
+participant "Cola de Tareas\n(Bull)" as QueueService
+participant "Worker de Tareas\n(Bull Workers)" as TaskWorker
+
+Cliente -> Frontend: Accede al sitio web
+Frontend -> Backend: Solicita página de inicio
+Backend -> Database: Recupera datos de productos
+Database --> Backend: Envía datos de productos
+Backend --> Frontend: Envía página de inicio con productos
+Frontend --> Cliente: Muestra página de inicio
+
+Cliente -> Frontend: Inicia sesión/Regístrate
+Frontend -> Backend: Envía credenciales/Información de registro
+Backend -> Database: Verifica credenciales/Guarda nuevo usuario
+Database --> Backend: Resultado de autenticación/Registro
+Backend --> Frontend: Confirma inicio de sesión/Registro exitoso
+Frontend --> Cliente: Muestra confirmación
+
+Cliente -> Frontend: Navega y selecciona productos
+Frontend -> Backend: Solicita detalles del producto
+Backend -> Database: Recupera detalles del producto
+Database --> Backend: Envía detalles del producto
+Backend --> Frontend: Envía detalles del producto
+Frontend --> Cliente: Muestra detalles del producto
+
+Cliente -> Frontend: Agrega producto al carrito
+Frontend -> Backend: Actualiza carrito de compras
+Backend -> Database: Guarda estado del carrito
+Database --> Backend: Confirmación de actualización
+Backend --> Frontend: Confirma adición al carrito
+Frontend --> Cliente: Muestra actualización del carrito
+
+Cliente -> Frontend: Procede al pago
+Frontend -> Backend: Envía información de pago
+Backend -> QueueService: Encolar tarea de procesamiento de pago
+QueueService -> TaskWorker: Procesar pago
+TaskWorker -> PaymentService: Procesa pago
+PaymentService --> TaskWorker: Resultado de la transacción
+TaskWorker --> Backend: Resultado de la transacción
+Backend -> Database: Registra pedido
+Database --> Backend: Confirmación de pedido
+Backend -> QueueService: Encolar tarea de envío de email
+QueueService -> TaskWorker: Enviar confirmación por email
+TaskWorker -> EmailService: Envía confirmación de pedido
+EmailService --> TaskWorker: Confirmación de envío de email
+TaskWorker --> Backend: Confirmación de envío de email
+Backend --> Frontend: Confirma pago y pedido
+Frontend --> Cliente: Muestra confirmación de pedido
+@enduml

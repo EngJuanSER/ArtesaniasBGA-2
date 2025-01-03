@@ -1,0 +1,104 @@
+@startuml DiagramaClases
+left to right direction
+skinparam classFontSize 14
+skinparam classAttributeFontSize 12
+
+class Artesanias {
+    -usuarios: Usuario[]
+    -productos: Producto[]
+    +agregarUsuario()
+    +eliminarUsuario(usuario: Usuario)
+    +listarProductos(): List<Producto>
+}
+
+abstract class Usuario {
+    -id: int
+    -username: String
+    -email: String
+    -password: String
+    -number: bigint
+    -name: String
+    -provider: String
+    -confirmed: boolean
+    -blocked: boolean
+    -resetPasswordToken: String
+    -confirmationToken: String
+    -comments: Comment[]
+    -cart: CarroDeCompra
+    -orders: Pedido[]
+}
+
+class Cliente extends Usuario {
+    +verProductos(): void
+    +comprarProductos(): void
+    +agregarProductosACarrito(producto: Producto): void
+    +borrarCarrito(): boolean
+    +realizarCompra(): boolean
+    +verCarrito(): void
+    +agregarComentario(): void
+}
+
+class Producto {
+    -id: String
+    -productName: String
+    -slug: String
+    -description: String
+    -active: boolean
+    -price: decimal
+    -origin: enum
+    -isFeatured: boolean
+    -stock: bigint
+    -quantity: bigint
+    -images: Media[]
+    -category: Categoria
+    -comments: Comment[]
+}
+
+class Categoria {
+    -id: int
+    -categoryName: String
+    -slug: String
+    -mainImage: Media
+}
+
+class CarroDeCompra {
+    -id: int
+    -products: Producto[]
+    -total: decimal
+    -bought: boolean
+    +agregarProducto(producto: Producto): void
+    +eliminarProducto(producto: Producto): void
+    +calcularTotal(): void
+}
+
+class Pedido {
+    -id: int
+    -slug: String
+    -total: decimal
+}
+
+class Comment {
+    -id: int
+    -comment: String
+    -user: Usuario
+    -product: Producto
+}
+
+' Relaciones
+' Composición: Dependencia fuerte, el ciclo de vida depende del contenedor
+Artesanias *-- "1..*" Usuario : contiene >
+Artesanias *-- "0..*" Producto : gestiona >
+
+' Agregación: Dependencia débil, pueden existir independientemente
+Usuario o-- "0..*" Comment : realiza >
+Usuario o-- "0..1" CarroDeCompra : tiene >
+Usuario o-- "0..*" Pedido : realiza >
+
+' Asociación: Relación simple
+Producto "1" -- "0..*" Comment : tiene >
+Producto "*" -- "1" Categoria : pertenece >
+
+' Agregación con tabla intermedia
+CarroDeCompra "0..*" o-- "0..*" Producto : contiene >
+
+@enduml

@@ -1,0 +1,689 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.7.13)  19 DEC 2024 21:19
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**"c:/Users/juan_/Dropbox/Mi PC (LAPTOP-T32JCHQ3)/Documents/GitHub/ArtesaniasBGA-2/doc/Documento_SAD/SAD.tex"
+(c:/Users/juan_/Dropbox/Mi PC (LAPTOP-T32JCHQ3)/Documents/GitHub/ArtesaniasBGA-2/doc/Documento_SAD/SAD.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+(C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count187
+\c@section=\count188
+\c@subsection=\count189
+\c@subsubsection=\count190
+\c@paragraph=\count191
+\c@subparagraph=\count192
+\c@figure=\count193
+\c@table=\count194
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/colortbl\colortbl.sty
+Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen141
+\ar@mcellbox=\box51
+\extrarowheight=\dimen142
+\NC@list=\toks17
+\extratabsurround=\skip50
+\backup@length=\skip51
+\ar@cellbox=\box52
+)
+\everycr=\toks18
+\minrowclearance=\skip52
+\rownum=\count195
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\dvipsnam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen143
+\TX@old@table=\dimen144
+\TX@old@col=\dimen145
+\TX@target=\dimen146
+\TX@delta=\dimen147
+\TX@cols=\count196
+\TX@ftn=\toks19
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip53
+\multirow@cntb=\count197
+\multirow@dima=\skip54
+\bigstrutjot=\dimen148
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip55
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen149
+)) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen150
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count198
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count199
+\leftroot@=\count266
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count267
+\DOTSCASE@=\count268
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen151
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count269
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count270
+\dotsspace@=\muskip16
+\c@parentequation=\count271
+\dspbrk@lvl=\count272
+\tag@help=\toks21
+\row@=\count273
+\column@=\count274
+\maxfields@=\count275
+\andhelp@=\toks22
+\eqnshift@=\dimen152
+\alignsep@=\dimen153
+\tagshift@=\dimen154
+\tagwidth@=\dimen155
+\totwidth@=\dimen156
+\lineht@=\dimen157
+\@envbody=\toks23
+\multlinegap=\skip56
+\multlinetaggap=\skip57
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks25
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen158
+\Gin@req@width=\dimen159
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count276
+\Gm@cntv=\count277
+\c@Gm@tempcnt=\count278
+\Gm@bindingoffset=\dimen160
+\Gm@wd@mp=\dimen161
+\Gm@odd@mp=\dimen162
+\Gm@even@mp=\dimen163
+\Gm@layoutwidth=\dimen164
+\Gm@layoutheight=\dimen165
+\Gm@layouthoffset=\dimen166
+\Gm@layoutvoffset=\dimen167
+\Gm@dimlist=\toks26
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/lipsum\lipsum.sty (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/l3keys2e\l3keys2e.sty (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2024-01-04 L3 programming layer (loader) 
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count279
+\l__pdf_internal_box=\box55
+))
+Package: l3keys2e 2023-10-10 LaTeX2e option processing using LaTeX3 keys
+)
+Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
+\g__lipsum_par_int=\count280
+\l__lipsum_a_int=\count281
+\l__lipsum_b_int=\count282
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/lipsum\lipsum.ltd.tex)) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count283
+\float@exts=\toks27
+\float@box=\box56
+\@float@everytoks=\toks28
+\@floatcapt=\box57
+) (SAD.aux
+
+LaTeX Warning: Label `tab:motivadores_negocio' multiply defined.
+
+
+LaTeX Warning: Label `tab:motivadores_negocio' multiply defined.
+
+)
+\openout1 = `SAD.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count284
+\scratchdimen=\dimen168
+\scratchbox=\box58
+\nofMPsegments=\count285
+\nofMParguments=\count286
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count287
+\MPscratchDim=\dimen169
+\MPnumerator=\count288
+\makeMPintoPDFobject=\count289
+\everyMPtoPDFconversion=\toks30
+) (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.9055pt, 500.484pt, 56.9055pt)
+* v-part:(T,H,B)=(71.13188pt, 652.70622pt, 71.13188pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=500.484pt
+* \textheight=652.70622pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-38.1381pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<img/ud.png, id=1, 179.16937pt x 158.84344pt>
+File: img/ud.png Graphic file (type png)
+<use img/ud.png>
+Package pdftex.def Info: img/ud.png  used on input line 39.
+(pdftex.def)             Requested size: 150.14671pt x 133.12218pt.
+[1
+
+{C:/Users/juan_/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./img/ud.png>] (SAD.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
+ (C:\Users\juan_\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1])
+\tf@toc=\write3
+\openout3 = `SAD.toc'.
+
+ [2] (SAD.lof)
+\tf@lof=\write4
+\openout4 = `SAD.lof'.
+
+ [3] (SAD.lot)
+\tf@lot=\write5
+\openout5 = `SAD.lot'.
+
+ [4]
+Overfull \hbox (9.426pt too wide) in paragraph at lines 72--73
+\OT1/cmr/m/n/12 Este doc-u-mento tiene como prop^^Sosito de-scribir la ar-qui-tec-tura de soft-ware definida para la plataforma
+ []
+
+[5]
+Underfull \hbox (badness 4132) in paragraph at lines 113--113
+[]|\OT1/cmr/m/n/12 Ofrecen sus pro-duc-tos a trav^^Ses de la
+ []
+
+[6] [7]
+Overfull \hbox (25.06976pt too wide) in paragraph at lines 139--139
+[]\OT1/cmr/bx/n/17.28 Especificaci^^Son y Re-cabaci^^Son de Re-quer-im-ien-tos Fun-cionales 
+ []
+
+[8]
+Overfull \hbox (1.10052pt too wide) in paragraph at lines 155--181
+ [][] 
+ []
+
+
+Overfull \hbox (1.10052pt too wide) in paragraph at lines 187--213
+ [][] 
+ []
+
+[9]
+Overfull \hbox (1.10052pt too wide) in paragraph at lines 219--245
+ [][] 
+ []
+
+[10]
+Underfull \hbox (badness 4072) in paragraph at lines 256--256
+[]|\OT1/cmr/m/n/12 Uso de Post-greSQL
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+[]|\OT1/cmr/m/n/12 Herramientas de
+ []
+
+[11] [12] [13]
+Underfull \hbox (badness 1205) in paragraph at lines 353--353
+[]|\OT1/cmr/m/n/12 Vendedores de Arte-
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 371--371
+[]|\OT1/cmr/m/n/12 Interfaz In-tu-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--389
+[]|\OT1/cmr/m/n/12 Mantenibilidad
+ []
+
+[15] [16]
+Underfull \hbox (badness 5388) in paragraph at lines 434--434
+[]|\OT1/cmr/m/n/12 Describa lo que el
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 434--434
+\OT1/cmr/m/n/12 stake-holder hace
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 434--434
+\OT1/cmr/m/n/12 ahora o le gus-tar^^S^^Pa
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 435--435
+[]|\OT1/cmr/m/n/12 Describa cualquier
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 435--435
+\OT1/cmr/m/n/12 en-trada pro-vista o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 435--435
+\OT1/cmr/m/n/12 disponible al mo-
+ []
+
+
+Underfull \hbox (badness 4391) in paragraph at lines 435--435
+[]|\OT1/cmr/m/n/12 Informaci^^Son de usuar-ios, pro-duc-tos y con-fig-u-raci^^Son de la
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 436--436
+[]|\OT1/cmr/m/n/12 Describa el con-texto
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 438--438
+[]|\OT1/cmr/m/n/12 Describa las sal-i-das
+ []
+
+
+Overfull \hbox (5.16003pt too wide) in paragraph at lines 428--441
+ [][] 
+ []
+
+[17]
+Underfull \hbox (badness 5388) in paragraph at lines 453--453
+[]|\OT1/cmr/m/n/12 Describa lo que el
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 453--453
+\OT1/cmr/m/n/12 stake-holder hace
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 453--453
+\OT1/cmr/m/n/12 ahora o le gus-tar^^S^^Pa
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 454--454
+[]|\OT1/cmr/m/n/12 Describa cualquier
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 454--454
+\OT1/cmr/m/n/12 en-trada pro-vista o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 454--454
+\OT1/cmr/m/n/12 disponible al mo-
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 455--455
+[]|\OT1/cmr/m/n/12 Describa el con-texto
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 457--457
+[]|\OT1/cmr/m/n/12 Describa las sal-i-das
+ []
+
+
+Overfull \hbox (5.16003pt too wide) in paragraph at lines 447--460
+ [][] 
+ []
+
+[18]
+Underfull \hbox (badness 5388) in paragraph at lines 472--472
+[]|\OT1/cmr/m/n/12 Describa lo que el
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 472--472
+\OT1/cmr/m/n/12 stake-holder hace
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 472--472
+\OT1/cmr/m/n/12 ahora o le gus-tar^^S^^Pa
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 473--473
+[]|\OT1/cmr/m/n/12 Describa cualquier
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 473--473
+\OT1/cmr/m/n/12 en-trada pro-vista o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 473--473
+\OT1/cmr/m/n/12 disponible al mo-
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 474--474
+[]|\OT1/cmr/m/n/12 Describa el con-texto
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 476--476
+[]|\OT1/cmr/m/n/12 Describa las sal-i-das
+ []
+
+
+Overfull \hbox (5.16003pt too wide) in paragraph at lines 466--479
+ [][] 
+ []
+
+[19]
+Underfull \hbox (badness 5388) in paragraph at lines 491--491
+[]|\OT1/cmr/m/n/12 Describa lo que el
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 491--491
+\OT1/cmr/m/n/12 stake-holder hace
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 491--491
+\OT1/cmr/m/n/12 ahora o le gus-tar^^S^^Pa
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
+[]|\OT1/cmr/m/n/12 Describa cualquier
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
+\OT1/cmr/m/n/12 en-trada pro-vista o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--492
+\OT1/cmr/m/n/12 disponible al mo-
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 493--493
+[]|\OT1/cmr/m/n/12 Describa el con-texto
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 495--495
+[]|\OT1/cmr/m/n/12 Describa las sal-i-das
+ []
+
+
+Overfull \hbox (5.16003pt too wide) in paragraph at lines 485--498
+ [][] 
+ []
+
+[20]
+Underfull \hbox (badness 5388) in paragraph at lines 510--510
+[]|\OT1/cmr/m/n/12 Describa lo que el
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 510--510
+\OT1/cmr/m/n/12 stake-holder hace
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 510--510
+\OT1/cmr/m/n/12 ahora o le gus-tar^^S^^Pa
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 511--511
+[]|\OT1/cmr/m/n/12 Describa cualquier
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 511--511
+\OT1/cmr/m/n/12 en-trada pro-vista o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 511--511
+\OT1/cmr/m/n/12 disponible al mo-
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 512--512
+[]|\OT1/cmr/m/n/12 Describa el con-texto
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 514--514
+[]|\OT1/cmr/m/n/12 Describa las sal-i-das
+ []
+
+
+Overfull \hbox (5.16003pt too wide) in paragraph at lines 504--517
+ [][] 
+ []
+
+[21] [22] [23] [24] [25]
+
+pdfTeX warning: pdflatex (file ./img/DiagramaArquitectura.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<img/DiagramaArquitectura.pdf, id=90, 1640.1275pt x 761.54514pt>
+File: img/DiagramaArquitectura.pdf Graphic file (type pdf)
+<use img/DiagramaArquitectura.pdf>
+Package pdftex.def Info: img/DiagramaArquitectura.pdf  used on input line 605.
+(pdftex.def)             Requested size: 500.484pt x 232.38132pt.
+[26]
+Overfull \hbox (3.28586pt too wide) in paragraph at lines 610--610
+[]\OT1/cmr/bx/n/17.28 Descripci^^Son y Jus-ti-fi-caci^^Son del (los) Patr^^Son(es) de Dise~no
+ []
+
+[27 <./img/DiagramaArquitectura.pdf>] [28] [29]
+
+pdfTeX warning: pdflatex (file ./img/Diagrama de contexto.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<img/Diagrama de contexto.pdf, id=156, 617.4267pt x 248.8497pt>
+File: img/Diagrama de contexto.pdf Graphic file (type pdf)
+<use img/Diagrama de contexto.pdf>
+Package pdftex.def Info: img/Diagrama de contexto.pdf  used on input line 691.
+(pdftex.def)             Requested size: 500.484pt x 201.72282pt.
+<img/DiagramaObjetos.pdf, id=157, 855.195pt x 344.03531pt>
+File: img/DiagramaObjetos.pdf Graphic file (type pdf)
+<use img/DiagramaObjetos.pdf>
+Package pdftex.def Info: img/DiagramaObjetos.pdf  used on input line 700.
+(pdftex.def)             Requested size: 500.484pt x 201.33597pt.
+[30 <./img/Diagrama de contexto.pdf>]
+<img/CasosDeUso.jpg, id=171, 944.52875pt x 1086.0575pt>
+File: img/CasosDeUso.jpg Graphic file (type jpg)
+<use img/CasosDeUso.jpg>
+Package pdftex.def Info: img/CasosDeUso.jpg  used on input line 709.
+(pdftex.def)             Requested size: 500.484pt x 575.49173pt.
+ [31 <./img/DiagramaObjetos.pdf>]
+Overfull \vbox (19.45213pt too high) has occurred while \output is active []
+
+ [32 <./img/CasosDeUso.jpg>]
+<img/DiagramaSecuencia.pdf, id=186, 842.39719pt x 929.72343pt>
+File: img/DiagramaSecuencia.pdf Graphic file (type pdf)
+<use img/DiagramaSecuencia.pdf>
+Package pdftex.def Info: img/DiagramaSecuencia.pdf  used on input line 717.
+(pdftex.def)             Requested size: 500.484pt x 552.37659pt.
+<img/DiagramaComponentes.pdf, id=187, 1176.64594pt x 446.41782pt>
+File: img/DiagramaComponentes.pdf Graphic file (type pdf)
+<use img/DiagramaComponentes.pdf>
+Package pdftex.def Info: img/DiagramaComponentes.pdf  used on input line 725.
+(pdftex.def)             Requested size: 500.484pt x 189.88513pt.
+ [33 <./img/DiagramaSecuencia.pdf>]
+File: img/ud.png Graphic file (type png)
+<use img/ud.png>
+Package pdftex.def Info: img/ud.png  used on input line 733.
+(pdftex.def)             Requested size: 500.484pt x 443.73576pt.
+ [34 <./img/DiagramaComponentes.pdf>]
+<img/DiagramaActividades.pdf, id=223, 404.26031pt x 873.2625pt>
+File: img/DiagramaActividades.pdf Graphic file (type pdf)
+<use img/DiagramaActividades.pdf>
+Package pdftex.def Info: img/DiagramaActividades.pdf  used on input line 741.
+(pdftex.def)             Requested size: 250.24199pt x 540.56436pt.
+ [35]
+<img/DiagramaClases.pdf, id=227, 878.53218pt x 728.7225pt>
+File: img/DiagramaClases.pdf Graphic file (type pdf)
+<use img/DiagramaClases.pdf>
+Package pdftex.def Info: img/DiagramaClases.pdf  used on input line 750.
+(pdftex.def)             Requested size: 500.484pt x 415.15375pt.
+ [36 <./img/DiagramaActividades.pdf>]
+File: img/ud.png Graphic file (type png)
+<use img/ud.png>
+Package pdftex.def Info: img/ud.png  used on input line 758.
+(pdftex.def)             Requested size: 500.484pt x 443.73576pt.
+ [37 <./img/DiagramaClases.pdf>] [38]
+No file SAD.bbl.
+[39] (SAD.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+ ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 4650 strings out of 474485
+ 75964 string characters out of 5743734
+ 1943542 words of memory out of 5000000
+ 26866 multiletter control sequences out of 15000+600000
+ 564569 words of font info for 60 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 79i,17n,93p,461b,280s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\juan_\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/juan_/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/juan_/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+Output written on SAD.pdf (40 pages, 581826 bytes).
+PDF statistics:
+ 294 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+

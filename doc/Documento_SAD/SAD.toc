@@ -1,0 +1,47 @@
+\contentsline {section}{\numberline {1}Descripción del Documento}{5}{}%
+\contentsline {subsection}{\numberline {1.1}Propósito y Audiencia}{5}{}%
+\contentsline {subsection}{\numberline {1.2}Organización del Documento}{5}{}%
+\contentsline {subsection}{\numberline {1.3}Convenciones}{5}{}%
+\contentsline {subsection}{\numberline {1.4}Terminología y Definiciones}{5}{}%
+\contentsline {section}{\numberline {2}Generalidades del Proyecto}{6}{}%
+\contentsline {subsection}{\numberline {2.1}Problema por Resolver}{6}{}%
+\contentsline {subsection}{\numberline {2.2}Descripción General del Sistema a Desarrollar}{6}{}%
+\contentsline {subsection}{\numberline {2.3}Objetivos de la Solución}{6}{}%
+\contentsline {subsection}{\numberline {2.4}Stakeholders}{7}{}%
+\contentsline {section}{\numberline {3}Especificación y Recabación de Requerimientos Funcionales}{8}{}%
+\contentsline {subsection}{\numberline {3.1}Motivadores de Negocio}{9}{}%
+\contentsline {subsection}{\numberline {3.2}Restricciones de Tecnología}{11}{}%
+\contentsline {subsection}{\numberline {3.3}Atributos de Calidad}{13}{}%
+\contentsline {subsection}{\numberline {3.4}Recabación y Justificación de Requerimientos No Funcionales}{13}{}%
+\contentsline {subsection}{\numberline {3.5}Escenarios de Calidad}{14}{}%
+\contentsline {section}{\numberline {4}Contexto}{17}{}%
+\contentsline {subsection}{\numberline {4.1}Escenarios Operacionales}{17}{}%
+\contentsline {subsection}{\numberline {4.2}Casos de Uso: Descripción y Modelo}{22}{}%
+\contentsline {section}{\numberline {5}Descripción y Justificación de la Arquitectura de Software Definida}{24}{}%
+\contentsline {subsection}{\numberline {5.1}Descripción específica de la arquitectura}{24}{}%
+\contentsline {subsubsection}{\numberline {5.1.1}Capa de Presentación (Frontend - Next.js con TypeScript)}{24}{}%
+\contentsline {subsubsection}{\numberline {5.1.2}Capa de Negocio (Backend - Strapi)}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.3}Capa de Persistencia (Base de Datos - PostgreSQL)}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.4}Capa de Integración de Mensajería (Bull y Redis)}{26}{}%
+\contentsline {subsubsection}{\numberline {5.1.5}Diagrama de Arquitectura}{27}{}%
+\contentsline {section}{\numberline {6}Descripción y Justificación del (los) Patrón(es) de Diseño Adoptado(s)}{27}{}%
+\contentsline {subsection}{\numberline {6.1}Patrón Observador (Observer)}{27}{}%
+\contentsline {subsection}{\numberline {6.2}Patrón Mediador (Mediator)}{28}{}%
+\contentsline {subsection}{\numberline {6.3}Patrón Fábrica (Factory)}{28}{}%
+\contentsline {subsection}{\numberline {6.4}Patrón Fachada (Facade)}{29}{}%
+\contentsline {subsection}{\numberline {6.5}Patrón Repositorio (Repository)}{29}{}%
+\contentsline {subsection}{\numberline {6.6}Patrón Singleton}{30}{}%
+\contentsline {section}{\numberline {7}Puntos de Vista y Modelos Arquitecturales}{30}{}%
+\contentsline {subsection}{\numberline {7.1}Punto de Vista: Descripción del Problema}{30}{}%
+\contentsline {subsubsection}{\numberline {7.1.1}Punto de Vista: Contexto de la Solución (Diagrama de Contexto)}{30}{}%
+\contentsline {subsubsection}{\numberline {7.1.2}Punto de Vista: Objetos (Diagrama de Objetos)}{31}{}%
+\contentsline {subsection}{\numberline {7.2}Punto de Vista: Interacción}{32}{}%
+\contentsline {subsubsection}{\numberline {7.2.1}Diagrama de Casos de Uso}{32}{}%
+\contentsline {subsubsection}{\numberline {7.2.2}Diagrama de Secuencia}{33}{}%
+\contentsline {subsection}{\numberline {7.3}Punto de Vista: Funcional (Diagrama de Componentes)}{34}{}%
+\contentsline {subsection}{\numberline {7.4}Punto de Vista: Despliegue (Diagrama de Despliegue)}{35}{}%
+\contentsline {subsection}{\numberline {7.5}Punto de Vista: Información (Diagrama(s) de Actividades)}{36}{}%
+\contentsline {subsection}{\numberline {7.6}Punto de Vista: Desarrollo (Diagrama de Clases)}{37}{}%
+\contentsline {subsection}{\numberline {7.7}Punto de Vista: Modelo Relacional de la BBDD}{38}{}%
+\contentsline {section}{\numberline {8}Justificación y Relaciones entre los Puntos de Vista}{38}{}%
+\contentsline {section}{\numberline {9}Firmas de Aceptación}{39}{}%

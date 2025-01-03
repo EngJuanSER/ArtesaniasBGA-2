@@ -1,0 +1,58 @@
+@startuml DiagramaActividades
+start
+
+:Usuario accede al sitio web;
+
+partition Autenticación {
+    :Decide iniciar sesión o registrarse;
+    if (¿Tiene cuenta?) then (Sí)
+        :Ingresa credenciales;
+        if (Credenciales válidas?) then (Sí)
+            :Acceso concedido;
+        else (No)
+            :Mensaje de error;
+            stop
+        endif
+    else (No)
+        :Completa formulario de registro;
+        :Cuenta creada;
+    endif
+}
+
+:Usuario navega por los productos;
+
+partition Carrito {
+    :Selecciona productos;
+    :Agrega productos al carrito;
+    if (¿Agregar más?) then (Sí)
+        :Continúa navegando;
+    else (No)
+        :Procede al pago;
+    endif
+}
+
+partition Pago {
+    :Ingresa información de pago;
+    :Envía información de pago al backend;
+    :Envia tarea a Bull para procesar pago;
+}
+
+partition ProcesamientoPago {
+    :Worker de Bull procesa pago con Stripe/PayPal;
+    if (Pago exitoso?) then (Sí)
+        :Registra pedido en base de datos;
+        :Encola tarea para enviar confirmación por email;
+    else (No)
+        :Mensaje de error de pago;
+        stop
+    endif
+}
+
+partition EnvioEmail {
+    :Worker de Bull envía confirmación por email;
+}
+
+:Usuario recibe confirmación de pedido;
+
+stop
+@enduml

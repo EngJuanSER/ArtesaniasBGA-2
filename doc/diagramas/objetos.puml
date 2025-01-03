@@ -1,0 +1,115 @@
+@startuml DiagramaObjetos
+left to right direction
+
+' Definición de Objetos
+object artesanias1 {
+    usuarios = [usuario1, usuario2]
+    productos = [producto1, producto2]
+}
+
+object usuario1 {
+    id = 1
+    nombre = "Juan Pérez"
+    email = "juan.perez@example.com"
+    contraseña = "hashed_password"
+    numeroCelular = 1234567890
+    rol = "Cliente"
+    fechaNacimiento = "1990-05-20"
+    metodoDePago = metodoPago1
+    carroCompra = carroCompra1
+}
+
+object usuario2 {
+    id = 2
+    nombre = "Maria Gomez"
+    email = "maria.gomez@example.com"
+    contraseña = "hashed_password"
+    numeroCelular = 9876543210
+    rol = "Administrador"
+}
+
+object metodoPago1 {
+    id = 1
+    tipo = "Tarjeta de Crédito"
+}
+
+object producto1 {
+    id = "101"
+    nombre = "Mochila Artesanal"
+    descripcion = "Mochila hecha a mano con materiales locales."
+    activo = true
+    precio = 49.99
+    categoria = categoria1
+    imagenes = ["mochila.jpg"]
+    origen = "Colombia"
+    destacado = false
+    stock = 50
+    reseña = "Excelente calidad y diseño."
+}
+
+object producto2 {
+    id = "102"
+    nombre = "Bolso de Mano"
+    descripcion = "Bolso de mano elegante y práctico."
+    activo = true
+    precio = 79.99
+    categoria = categoria1
+    imagenes = ["bolso.jpg"]
+    origen = "Colombia"
+    destacado = true
+    stock = 30
+    reseña = "Elegante y práctico."
+}
+
+object categoria1 {
+    id = 1
+    nombre = "Bolsos"
+    imagen = "categoria_bolsos.jpg"
+}
+
+object carroCompra1 {
+    id = 201
+    cliente = usuario1
+    productos = [producto1, producto2]
+    total = 129.98
+}
+
+object pedido1 {
+    direccion = "Calle 123 #45-67"
+    carroDeCompra = carroCompra1
+    fechaDeCompra = "2023-10-15"
+}
+
+object bullQueue1 {
+    nombre = "ProcesamientoPago"
+    estado = "En cola"
+}
+
+object redisServer1 {
+    host = "redis-server.local"
+    puerto = 6379
+}
+
+' Relaciones
+
+' Agregación
+artesanias1 o-up- usuario1
+artesanias1 o-left- usuario2
+artesanias1 o-left- producto1
+artesanias1 o-down- producto2
+
+carroCompra1 o-right- producto1
+carroCompra1 o-left- producto2
+pedido1 o-left- carroCompra1
+
+' Composición
+usuario1 *-down- metodoPago1
+usuario1 o-up- carroCompra1
+producto1 o-left- categoria1
+producto2 o-left- categoria1
+
+' Relación con Bull y Redis
+usuario1 --> bullQueue1 : Encola tarea de pago
+bullQueue1 --> redisServer1 : Utiliza Redis para gestionar colas
+
+@enduml

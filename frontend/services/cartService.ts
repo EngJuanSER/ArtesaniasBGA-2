@@ -45,6 +45,16 @@ export async function addProductBySlugToCart(slug: string, quantity: number = 1)
   if (!authToken) return { ok: false, error: "No autenticado" };
 
   try {
+
+     // Primero verificar stock
+     const stockCheck = await fetcher(`/api/products/${slug}/check-stock?quantity=${quantity}`, {
+      headers: { Authorization: `Bearer ${authToken}` }
+    });
+
+    if (!stockCheck.available) {
+      return { ok: false, error: "Stock insuficiente" };
+    }
+    
     const data = await fetcher("/api/carts", {
       method: "POST",
       headers: {
