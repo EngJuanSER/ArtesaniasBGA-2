@@ -7,6 +7,7 @@ services:
       - NEXT_PUBLIC_BACKEND_URL=http://backend:1337
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
 
@@ -24,6 +25,7 @@ services:
       - REDIS_PORT=6379
     volumes:
       - ./backend:/app
+      - /app/node_modules
     depends_on:
       - postgres
       - redis
