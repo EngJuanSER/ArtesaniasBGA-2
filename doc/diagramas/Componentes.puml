@@ -1,50 +1,83 @@
 @startuml
-
-skinparam component {
-    BackgroundColor White
-    BorderColor Black
-}
-
-skinparam package {
-    BackgroundColor White
-    BorderColor Black
-}
-
 package "Frontend" {
-    component "Interfaz de Usuario\n(Next.js)" as FrontendUI
+    component "Next.js Components" {
+        [ProductList]
+        [CartComponent]
+        [WishlistComponent]
+        [CustomRequestForm]
+        [AdminDashboard]
+        [UserProfile]
+        [CommentSection]
+    }
+    
+    component "Server Actions" {
+        [CartActions]
+        [WishlistActions]
+        [CustomRequestActions]
+        [ReportActions]
+        [AuthActions]
+        [CommentActions]
+    }
+    
+    component "Services Layer" {
+        [CartService]
+        [WishlistService]
+        [AuthService]
+        [ProductService]
+        [UserService]
+        [CustomRequestService]
+        [CommentService]
+    }
 }
 
 package "Backend" {
-    component "Strapi Headless CMS\n(Node.js)" as StrapiBackend
-    component "Queue Service\n(Bull)" as QueueService
-    component "Redis Server\n(Redis)" as RedisServer
+    component "Strapi Controllers" {
+        [CartController]
+        [WishlistController]
+        [CustomRequestController]
+        [ProductController]
+        [CategoryController]
+        [CommentController]
+        [ReportController]
+    }
+    
+    component "Queue Service\n(Bull)" {
+        [EmailQueue]
+        [ReportQueue]
+        [PaymentQueue]
+        [StockUpdateQueue]
+    }
+    
+    component "Redis Server" {
+        [Cache]
+        [SessionStore]
+        [QueueStorage]
+    }
+    
+    database "PostgreSQL Database" {
+        [Users]
+        [Products]
+        [Categories]
+        [Carts]
+        [WishLists]
+        [Orders]
+        [CustomRequests]
+        [Comments]
+        [Reports]
+    }
 }
 
-package "Base de Datos"{
-    component "Base de Datos\n(PostgreSQL)" as Database
+package "External Services" {
+    [PaymentProcessor]
+    [EmailService]
+    [StorageService]
 }
 
-package "Servicios Externos" {
-    component "Procesador de Pagos\n(Stripe, PayPal)" as PaymentProcessor
-    component "Servicio de Email\n(SendGrid, Mailgun)" as EmailService
-}
-
-package "Servicios de Tareas" {
-    component "Servicio de Procesamiento de Tareas\n(Bull Workers)" as TaskProcessor
-}
-
-FrontendUI --> StrapiBackend : Solicitudes API
-
-StrapiBackend --> Database : Leer/Escribir Datos
-StrapiBackend --> QueueService : Encolar Tareas Asíncronas
-
-QueueService --> RedisServer : Gestiona Colas
-TaskProcessor --> RedisServer : Escucha Colas
-
-TaskProcessor --> PaymentProcessor : Procesar Pagos
-TaskProcessor --> EmailService : Enviar Emails de Confirmación
-
-PaymentProcessor --> TaskProcessor : Respuesta de Pago
-EmailService --> TaskProcessor : Confirmación de Email
-
-@enduml
+' Relaciones
+[Next.js Components] --> [Server Actions]
+[Server Actions] --> [Services Layer]
+[Services Layer] --> [Strapi Controllers]
+[Strapi Controllers] --> [PostgreSQL Database]
+[Queue Service\n(Bull)] --> [Redis Server]
+[Strapi Controllers] --> [Queue Service\n(Bull)]
+[Queue Service\n(Bull)] --> [External Services]

@@ -1,58 +1,53 @@
-@startuml DiagramaActividades
+@startuml
 start
 
-:Usuario accede al sitio web;
+:User accesses website;
 
-partition Autenticación {
-    :Decide iniciar sesión o registrarse;
-    if (¿Tiene cuenta?) then (Sí)
-        :Ingresa credenciales;
-        if (Credenciales válidas?) then (Sí)
-            :Acceso concedido;
-        else (No)
-            :Mensaje de error;
+partition Authentication {
+    if (Has account?) then (yes)
+        :Login;
+        if (Valid credentials?) then (yes)
+            :Access granted;
+        else (no)
+            :Show error;
             stop
         endif
-    else (No)
-        :Completa formulario de registro;
-        :Cuenta creada;
+    else (no)
+        :Register;
+        :Create account;
     endif
 }
 
-:Usuario navega por los productos;
+partition ProductBrowsing {
+    :Browse products;
+    fork
+        :Add to Cart;
+        :Update Cart;
+    fork again
+        :Add to Wishlist;
+        :Update Wishlist;
+    fork again
+        :Make Custom Request;
+        :Admin Reviews Request;
+    end fork
+}
 
-partition Carrito {
-    :Selecciona productos;
-    :Agrega productos al carrito;
-    if (¿Agregar más?) then (Sí)
-        :Continúa navegando;
-    else (No)
-        :Procede al pago;
+partition Shopping {
+    if (Cart not empty?) then (yes)
+        :Review Cart;
+        :Update quantities;
+        :Proceed to checkout;
+        :Process payment;
+        if (Payment successful?) then (yes)
+            :Create order;
+            :Send confirmation email;
+            :Update stock;
+        else (no)
+            :Show payment error;
+            stop
+        endif
     endif
 }
-
-partition Pago {
-    :Ingresa información de pago;
-    :Envía información de pago al backend;
-    :Envia tarea a Bull para procesar pago;
-}
-
-partition ProcesamientoPago {
-    :Worker de Bull procesa pago con Stripe/PayPal;
-    if (Pago exitoso?) then (Sí)
-        :Registra pedido en base de datos;
-        :Encola tarea para enviar confirmación por email;
-    else (No)
-        :Mensaje de error de pago;
-        stop
-    endif
-}
-
-partition EnvioEmail {
-    :Worker de Bull envía confirmación por email;
-}
-
-:Usuario recibe confirmación de pedido;
 
 stop
 @enduml

@@ -1,17 +1,17 @@
-@startuml DiagramaClases
+@startuml ClassDiagram
 left to right direction
 skinparam classFontSize 14
 skinparam classAttributeFontSize 12
 
 class Artesanias {
-    -usuarios: Usuario[]
-    -productos: Producto[]
-    +agregarUsuario()
-    +eliminarUsuario(usuario: Usuario)
-    +listarProductos(): List<Producto>
+    -users: User[]
+    -products: Product[]
+    +addUser()
+    +deleteUser(user: User)
+    +listProducts(): List<Product>
 }
 
-abstract class Usuario {
+abstract class User {
     -id: int
     -username: String
     -email: String
@@ -23,22 +23,37 @@ abstract class Usuario {
     -blocked: boolean
     -resetPasswordToken: String
     -confirmationToken: String
+    +authenticate(): boolean
+    +updateProfile(): void
+}
+
+class Client extends User {
     -comments: Comment[]
-    -cart: CarroDeCompra
-    -orders: Pedido[]
+    -cart: Cart
+    -wishlist: Wishlist
+    -orders: Order[]
+    -customRequests: CustomRequest[]
+    +viewProducts(): void
+    +buyProducts(): void
+    +addProductToCart(product: Product): void
+    +addProductToWishlist(product: Product): void
+    +deleteCart(): boolean
+    +completePurchase(): boolean
+    +viewCart(): void
+    +viewWishlist(): void
+    +addComment(): void
+    +requestCustomProduct(): void
 }
 
-class Cliente extends Usuario {
-    +verProductos(): void
-    +comprarProductos(): void
-    +agregarProductosACarrito(producto: Producto): void
-    +borrarCarrito(): boolean
-    +realizarCompra(): boolean
-    +verCarrito(): void
-    +agregarComentario(): void
+class Admin extends User {
+    +generateReport(): Report
+    +manageProducts(): void
+    +manageCategories(): void
+    +respondCustomRequest(): void
+    +viewStatistics(): void
 }
 
-class Producto {
+class Product {
     -id: String
     -productName: String
     -slug: String
@@ -50,55 +65,104 @@ class Producto {
     -stock: bigint
     -quantity: bigint
     -images: Media[]
-    -category: Categoria
+    -category: Category
     -comments: Comment[]
+    -cartItems: CartItem[]
+    -wishItems: WishItem[]
+    -offer: boolean
+    -priceOffer: decimal
 }
 
-class Categoria {
+class Category {
     -id: int
     -categoryName: String
     -slug: String
     -mainImage: Media
 }
 
-class CarroDeCompra {
-    -id: int
-    -products: Producto[]
-    -total: decimal
-    -bought: boolean
-    +agregarProducto(producto: Producto): void
-    +eliminarProducto(producto: Producto): void
-    +calcularTotal(): void
-}
-
-class Pedido {
+class Cart {
     -id: int
     -slug: String
+    -cartItems: CartItem[]
     -total: decimal
+    -bought: boolean
+    +addItem(product: Product, quantity: int): void
+    +removeItem(item: CartItem): void
+    +updateQuantity(item: CartItem, quantity: int): void
+    +calculateTotal(): void
+}
+
+class CartItem {
+    -id: int
+    -slug: String
+    -quantity: bigint
+    -product: Product
+    -cart: Cart
+}
+
+class Wishlist {
+    -id: int
+    -slug: String
+    -wishItems: WishItem[]
+    -user: User
+    +addItem(product: Product): void
+    +removeItem(item: WishItem): void
+}
+
+class WishItem {
+    -id: int
+    -slug: String
+    -product: Product
+    -wishlist: Wishlist
+}
+
+
+class Report {
+    -id: int
+    -type: enum
+    -startDate: Date
+    -endDate: Date
+    -data: JSON
+    -generatedBy: Admin
+}
+
+class CustomRequest {
+    -id: int
+    -client: Client
+    -description: String
+    -budget: decimal
+    -status: enum
+    -requestDate: Date
+    -referenceImages: Media[]
+    -adminResponse: String
 }
 
 class Comment {
     -id: int
     -comment: String
-    -user: Usuario
-    -product: Producto
+    -user: User
+    -product: Product
+    -createdAt: Date
 }
 
-' Relaciones
-' Composición: Dependencia fuerte, el ciclo de vida depende del contenedor
-Artesanias *-- "1..*" Usuario : contiene >
-Artesanias *-- "0..*" Producto : gestiona >
+' Relations
+Artesanias *-- "1..*" User : contains >
+Artesanias *-- "0..*" Product : manages >
 
-' Agregación: Dependencia débil, pueden existir independientemente
-Usuario o-- "0..*" Comment : realiza >
-Usuario o-- "0..1" CarroDeCompra : tiene >
-Usuario o-- "0..*" Pedido : realiza >
+Client o-- "0..*" Comment : makes >
+Client o-- "0..1" Cart : has >
+Client o-- "0..1" Wishlist : has >
+Client o-- "0..*" CustomRequest : requests >
 
-' Asociación: Relación simple
-Producto "1" -- "0..*" Comment : tiene >
-Producto "*" -- "1" Categoria : pertenece >
+Admin o-- "0..*" Report : generates >
 
-' Agregación con tabla intermedia
-CarroDeCompra "0..*" o-- "0..*" Producto : contiene >
+Product "1" -- "0..*" Comment : has >
+Product "*" -- "1" Category : belongs >
+Product "1" -- "0..*" CartItem : referenced >
+Product "1" -- "0..*" WishItem : referenced >
+
+Cart *-- "0..*" CartItem : contains >
+Wishlist *-- "0..*" WishItem : contains >
+
 
 @enduml
