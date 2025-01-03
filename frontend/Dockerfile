@@ -1,10 +1,13 @@
-FROM node:18-alpine
+FROM node:alpine
 
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+ENV NODE_PATH=/app/node_modules
+
+COPY package.json ./
+COPY pnpm-lock.yaml ./
 
 RUN pnpm install
 
@@ -14,4 +17,4 @@ RUN pnpm run build
 
 EXPOSE 3000
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "dev"]

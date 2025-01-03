@@ -1,10 +1,10 @@
-FROM node:18-alpine
-
-RUN apk add --no-cache python3 make g++ git
+FROM node:alpine
 
 RUN npm install -g pnpm
 
 WORKDIR /app
+
+ENV NODE_PATH=/app/node_modules
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
