@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   frontend:
     build: ./frontend
@@ -8,15 +7,11 @@ services:
       - NEXT_PUBLIC_BACKEND_URL=http://backend:1337
     volumes:
       - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
     depends_on:
       - backend
 
   backend:
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
+    build: ./backend
     ports:
       - "1337:1337"
     environment:
@@ -29,7 +24,6 @@ services:
       - REDIS_PORT=6379
     volumes:
       - ./backend:/app
-      - /app/node_modules
     depends_on:
       - postgres
       - redis
