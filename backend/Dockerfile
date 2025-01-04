@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:18-alpine
 
 RUN npm install -g pnpm
 
@@ -15,7 +15,7 @@ RUN pnpm install
 COPY . .
 
 # Importar configuración de Strapi
-RUN pnpm run strapi import -- -f /app/strappi-export.tar.gz
+RUN pnpm run strapi import --file /app/strappi-export.tar.gz
 
 ENV NODE_ENV=production
 # Server
