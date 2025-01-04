@@ -43,4 +43,3 @@ next-env.d.ts
 /backend/.tmp
 /backend/build
 /backend/node_modules
-/backend/public/uploads
