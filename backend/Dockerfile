@@ -14,13 +14,7 @@ RUN pnpm install
 
 COPY . .
 
-# Importar configuración de Strapi
-RUN pnpm run strapi import --file /app/strappi-export.tar.gz
-
 ENV NODE_ENV=production
-# Server
-ENV HOST=0.0.0.0
-ENV PORT=1337
 
 # Secrets
 ENV APP_KEYS=qTo3mjncauIzaF5dpeIynQ==,VrXE0prEk2nyAGNoj2neEA==,JeUxmGZzKQanfSpt+LycHA==,UiLk5atr8YUFM2veq7tjxw==
@@ -41,7 +35,10 @@ ENV DATABASE_FILENAME=
 
 RUN pnpm run build
 
-ENV NODE_ENV=development
+ENV NODE_ENV=production
+
+# Importar configuración de Strapi
+RUN pnpm run strapi import --file /app/strappi-export.tar.gz
 
 EXPOSE 1337
 
