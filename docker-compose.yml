@@ -1,71 +1,9 @@
 services:
-  frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://localhost:1337
-      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-      - NEXT_PUBLIC_JWT_SECRET=G58zMBt9C7uPJuzyswzBzg
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-
-  backend:
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "1337:1337"
-    environment:
-      # Server
-      - HOST=localhost
-      - PORT=1337
-      # Secrets
-      - APP_KEYS=qTo3mjncauIzaF5dpeIynQ==,VrXE0prEk2nyAGNoj2neEA==,JeUxmGZzKQanfSpt+LycHA==,UiLk5atr8YUFM2veq7tjxw==
-      - API_TOKEN_SALT=uVD09MPnAVmOkYefKCoD9g==
-      - ADMIN_JWT_SECRET=fCVHsDK4SZ4vQ4EDw2Q/Rg==
-      - TRANSFER_TOKEN_SALT=x0pV4ktdFbygNwKMVAACSg==
-      - JWT_SECRET=G58zMBt9C7uPJuzyswzBzg==
-      # Database
-      - DATABASE_CLIENT=postgres
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=artesanias
-      - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=123456
-      - DATABASE_SSL=false
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    depends_on:
-      - postgres
-      - redis
-
-  postgres:
-    image: postgres:14
-    environment:
-      POSTGRES_DB: artesanias
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
-
 volumes:
-  postgres_data:
   redis_data:
