@@ -18,6 +18,7 @@
     "bull": "^4.16.5",
     "ioredis": "^5.4.1",
     "pg": "8.8.0",
+    "postgres": "^3.4.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
