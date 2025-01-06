@@ -2,6 +2,9 @@
 # OS X
 ############################
 
+# envioroment
+.env
+
 .DS_Store
 .AppleDouble
 .LSOverride
