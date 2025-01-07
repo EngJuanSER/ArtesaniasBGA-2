@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { serverUpdateCartItemQuantity, serverDeleteCartItem } from "@/data/actions/cart-actions";
 import { useRouter } from "next/navigation";
+import PayPalButton from "./paypal-button";
 
 
 
@@ -23,6 +24,7 @@ interface CartClientProps {
 }
 
 export default function CartClient({ cart }: CartClientProps) {
+  const EXCHANGE_RATE = 1/4360.69;
   const router = useRouter();
   const { toast } = useToast();
   const [localCart, setLocalCart] = useState<CartType | null>(cart);
@@ -233,21 +235,53 @@ export default function CartClient({ cart }: CartClientProps) {
               Comprar Ahora
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="bg-white text-black">
             <DialogHeader>
               <DialogTitle>Confirmar Compra</DialogTitle>
               <DialogDescription>
-                ¿Deseas continuar con la compra? Verifica las cantidades antes de continuar.
+                Por favor revisa tu orden antes de proceder al pago
               </DialogDescription>
             </DialogHeader>
-            <div className="flex justify-end gap-4">
-              <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
-                Volver a Editar
+                      
+            {/* Resumen de productos */}
+            <div className="space-y-2 py-4">
+                {localCart?.cartItems.map((item) => (
+                  <div key={item.id} className="flex justify-between text-sm">
+                    <span>{item.productName} × {localQuantities[item.id] || item.quantity}</span>
+                    <span>
+                      ${
+                        (
+                          (item.offer && item.priceOffer ? item.priceOffer : item.price) *
+                          (localQuantities[item.id] || item.quantity)
+                        ).toFixed(2)
+                      }
+                    </span>
+                  </div>
+                ))}
+                <div className="border-t pt-2 flex justify-between font-bold">
+                  <span>Total (USD):</span>
+                    <span>
+                    ${(
+                      Number(calculateTotal(localCart?.cartItems, localQuantities)) *
+                      EXCHANGE_RATE
+                    ).toFixed(2)}
+                    </span>
+                </div>
+              </div>
+
+              {/* Botón de PayPal */}
+              <PayPalButton
+                cart={localCart}
+                quantities={localQuantities}
+                onSuccess={() => {
+                  setShowConfirmDialog(false);
+                  setLocalCart(null);
+                }}
+              />
+
+              <Button className="bg-gray-400 hover:bg-gray-800" variant="outline" onClick={() => setShowConfirmDialog(false)}>
+                Volver al Carrito
               </Button>
-              <Button onClick={handleConfirmPurchase} disabled={isUpdating} className="text-muted hover">
-                Finalizar Compra
-              </Button>
-            </div>
           </DialogContent>
         </Dialog>
       </div>

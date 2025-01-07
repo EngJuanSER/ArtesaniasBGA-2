@@ -1,4 +1,5 @@
 import { fetcher } from "./apiService";
+import { fetchProductSlugStock } from "./productService";
 import { getAuthToken } from "./tokenService";
 import { CartType } from "@/types/cart";
 
@@ -40,21 +41,21 @@ export async function fetchUserCart(): Promise<CartType | null> {
   }
 }
 
+export async function checkProductStock(slug: string, quantity: number): Promise<boolean> {
+  try {
+    const response = await fetcher(`/api/products/${slug}/check-stock?quantity=${quantity}`);
+    return response.data?.available || false;
+  } catch (error) {
+    console.error('Error checking stock:', error);
+    return false;
+  }
+}
+
 export async function addProductBySlugToCart(slug: string, quantity: number = 1): Promise<any> {
   const authToken = await getAuthToken();   // Se obtiene 'jwt' desde la cookie
   if (!authToken) return { ok: false, error: "No autenticado" };
 
   try {
-
-     // Primero verificar stock
-     const stockCheck = await fetcher(`/api/products/${slug}/check-stock?quantity=${quantity}`, {
-      headers: { Authorization: `Bearer ${authToken}` }
-    });
-
-    if (!stockCheck.available) {
-      return { ok: false, error: "Stock insuficiente" };
-    }
-    
     const data = await fetcher("/api/carts", {
       method: "POST",
       headers: {

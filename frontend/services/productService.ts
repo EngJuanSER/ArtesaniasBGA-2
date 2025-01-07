@@ -18,3 +18,9 @@ export async function fetchFeaturedProducts(): Promise<ProductType[]> {
   const data = await fetcher(`/api/products?filters[isFeatured][$eq]=true&populate=*`);
   return data.data;
 }
+
+// Obtiene stock de un producto
+export async function fetchProductSlugStock(slug: string): Promise<number> {
+  const data = await fetcher(`/api/products?filters[slug][$eq]=${slug}&fields[0]=stock`);
+  return data.stock;
+}

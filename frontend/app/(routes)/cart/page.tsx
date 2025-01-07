@@ -2,7 +2,6 @@ import { fetchUserCart } from "@/services/cartService";
 import CartClient from "./components/cart-client";
 
 export default async function CartPage() {
-  // SSR: obtiene el carrito al cargar la página
   const cart = await fetchUserCart();
   console.log(cart);
 

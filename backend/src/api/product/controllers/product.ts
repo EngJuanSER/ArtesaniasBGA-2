@@ -1,6 +1,3 @@
-/**
- * product controller
- */
 
 import { factories } from '@strapi/strapi'
 

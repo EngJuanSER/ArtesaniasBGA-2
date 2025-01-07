@@ -23,16 +23,19 @@ export function AddToCartForm({ productSlug }: AddToCartFormProps) {
   const [quantity, setQuantity] = useState(1);
   
   useEffect(() => {
-    if (cartState.error) {
+    if (cartState.ok) {
+      toast({
+        title: "Éxito",
+        description: "Producto agregado al carrito",
+        variant: "default",
+        duration: 1000,
+      });
+    } else if (cartState.error) {
       toast({
         title: "Error",
         description: cartState.error,
         variant: "default",
-      });
-    } else if (cartState.ok) {
-      toast({
-        title: "Éxito",
-        description: "Producto agregado al carrito",
+        duration: 1000,
       });
     }
   }, [cartState]);

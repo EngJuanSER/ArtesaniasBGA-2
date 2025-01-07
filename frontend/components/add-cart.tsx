@@ -22,14 +22,16 @@ export function AddToCartButton({ productSlug }: AddToCartButtonProps) {
   );
 
   useEffect(() => {
-    if (cartState.error) {
+    if (cartState.ok) {
+      toast({
+        description: "Producto agregado al carrito",
+        variant:"default",
+        duration: 1000,
+      });
+    } else if (cartState.error) {
       toast({
         description: cartState.error,
         variant: "default",
-      });
-    } else if (cartState.ok) {
-      toast({
-        description: "Producto agregado al carrito",
       });
     }
   }, [cartState]);

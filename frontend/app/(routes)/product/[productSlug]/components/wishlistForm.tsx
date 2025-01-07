@@ -24,14 +24,15 @@ export function WishlistForm({ productSlug }: WishlistFormProps) {
   );
 
   useEffect(() => {
-    if (wishlistState.error) {
+    if (wishlistState.ok) {
+      toast({
+        description: "Producto agregado a favoritos",
+        variant:"default",
+      });
+    } else if (wishlistState.error) {
       toast({
         description: wishlistState.error,
         variant: "default",
-      });
-    } else if (wishlistState.ok) {
-      toast({
-        description: "Producto agregado a favoritos",
       });
     }
   }, [wishlistState, toast]);

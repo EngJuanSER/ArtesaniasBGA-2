@@ -13,6 +13,9 @@ export async function serverAddToCartAction(
   formData: FormData
 ): Promise<CartState> {
   try {
+
+    
+
     if (!formData || typeof formData.get !== 'function') {
       return { ok: false, error: "Datos de formulario inválidos" };
     }

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "order",
     "pluralName": "orders",
-    "displayName": "Order"
+    "displayName": "Order",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,6 +17,39 @@
     },
     "total": {
       "type": "decimal"
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": [
+        "pendiente",
+        "procesando",
+        "completado",
+        "cancelado"
+      ],
+      "default": "pendiente"
+    },
+    "items": {
+      "type": "json"
+    },
+    "paymentID": {
+      "type": "string"
+    },
+    "paymentState": {
+      "type": "enumeration",
+      "enum": [
+        "pendiente",
+        "exito",
+        "fallo"
+      ]
+    },
+    "shippingAddres": {
+      "type": "json"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "orders"
     }
   }
 }
