@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { serverUpdateCartItemQuantity, serverDeleteCartItem } from "@/data/actions/cart-actions";
+import { serverDeleteCartItem } from "@/data/actions/cart-actions";
 import { useRouter } from "next/navigation";
 import PayPalButton from "./paypal-button";
 
@@ -69,53 +69,6 @@ export default function CartClient({ cart }: CartClientProps) {
       ...prev,
       [itemId]: newQuantity
     }));
-  };
-  
-  const handleConfirmPurchase = async () => {
-    setIsUpdating(true);
-    try {
-      for (const [itemId, quantity] of Object.entries(localQuantities)) {
-        console.log(`Actualizando item ${itemId} a cantidad ${quantity}`);
-        
-        const result = await serverUpdateCartItemQuantity(
-          Number(itemId), 
-          Number(quantity)
-        );
-  
-        if (!result.ok) {
-          throw new Error(`Error al actualizar item ${itemId}: ${result.error}`);
-        }
-      }
-  
-      // Log de la información de compra
-      const purchaseInfo = localCart?.cartItems.map(item => ({
-        productName: item.productName,
-        quantity: localQuantities[item.id] || item.quantity,
-        price: item.offer && item.priceOffer ? item.priceOffer : item.price,
-        total: (item.offer && item.priceOffer ? item.priceOffer : item.price) * 
-               Number(localQuantities[item.id] || item.quantity)
-      }));
-  
-      console.log("Información de compra actualizada:", {
-        items: purchaseInfo,
-        totalCompra: calculateTotal(localCart?.cartItems || [], localQuantities)
-      });
-  
-      toast({ 
-        description: "Cantidades actualizadas correctamente",
-        variant: "default"
-      });
-      
-      setShowConfirmDialog(false);
-    } catch (error: any) {
-      console.error("Error en confirmación:", error);
-      toast({ 
-        description: error.message,
-        variant: "default"
-      });
-    } finally {
-      setIsUpdating(false);
-    }
   };
   
   const handleDeleteItem = async (itemId: number) => {

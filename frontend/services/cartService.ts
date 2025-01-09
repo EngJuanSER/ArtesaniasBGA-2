@@ -77,26 +77,6 @@ export async function addProductBySlugToCart(slug: string, quantity: number = 1)
   }
 }
 
-export async function updateCartItemQuantity(cartItemId: number, quantity: number): Promise<any> {
-  const authToken = await getAuthToken();
-  if (!authToken) return { ok: false, error: "No autenticado" };
-
-  try {
-    const data = await fetcher(`/api/cart-items/${cartItemId}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ quantity: Number(quantity) }) // Asegurar que es número
-    });
-
-    return { ok: true, data: data.data };
-  } catch (error: any) {
-    return { ok: false, error: error.message };
-  }
-}
-
 export async function deleteCartItem(cartItemId: number): Promise<any> {
   const authToken = await getAuthToken();
   if (!authToken) return { ok: false, error: "No autenticado" };

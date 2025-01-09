@@ -1,10 +1,11 @@
 "use client";
 
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { createOrder } from "@/data/actions/order-actions"; 
+import { createOrder, createPayPalOrder, capturePayPalOrder } from "@/data/actions/order-actions"; 
 import { CartType } from "@/types/cart"; 
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { serverCleanCart } from "@/data/actions/cart-actions";
 
 interface PayPalButtonProps {
   cart: CartType;
@@ -18,88 +19,97 @@ export default function PayPalButton({ cart, quantities, onSuccess }: PayPalButt
   const EXCHANGE_RATE = 1/4360.69;
 
 
-  // Calculamos items primero
   const items = cart.cartItems.map(item => {
-    const priceUsd = (item.offer && item.priceOffer ? item.priceOffer : item.price) * EXCHANGE_RATE;
-    const quantity = quantities[item.id] || item.quantity;
+    const priceUsd = Number(
+      (item.offer && item.priceOffer ? item.priceOffer : item.price)
+    ) * EXCHANGE_RATE;
+    
     return {
       name: item.productName,
       unit_amount: {
         currency_code: "USD",
         value: priceUsd.toFixed(2)
       },
-      quantity: quantity.toString()
+      quantity: (quantities[item.id] || item.quantity).toString(),
+      category: "PHYSICAL_GOODS" as const
     };
   });
 
-  // Calculamos el total sumando (precio * cantidad) de cada item
-  const totalUsd = items.reduce((sum, item) => {
-    return sum + (parseFloat(item.unit_amount.value) * parseInt(item.quantity));
-  }, 0).toFixed(2);
+  // Total PayPal
+  const totalUsd = items.reduce((sum, item) => (
+    sum + (Number(item.unit_amount.value) * Number(item.quantity))
+  ), 0);
 
-  // Calculamos el total en pesos colombianos
+  // Total en moneda local (para registro interno)
   const total = cart.cartItems.reduce((sum, item) => {
     const price = item.offer && item.priceOffer ? item.priceOffer : item.price;
     return sum + (price * (quantities[item.id] || item.quantity));
   }, 0);
   
+
   return (
     <div className="max-h-[48vh] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
       <PayPalButtons
       style={{
         layout: "vertical",
-        color: "black",
+        color: "blue",
         shape: "rect",
         label: "checkout",
       }}
-      createOrder={(data, actions) => {
-        return actions.order.create({
-          intent: "CAPTURE",
-          purchase_units: [{
-            amount: {
-              currency_code: "USD",
-              value: totalUsd,
-              breakdown: {
-                item_total: {
-                  currency_code: "USD",
-                  value: totalUsd
-                }
-              }
-            },
-            items: items
-          }],
-          application_context: {
-            shipping_preference: "NO_SHIPPING"
-          }
-        });
-      }}
-      onApprove={async (data, actions) => {
+      forceReRender={[items, totalUsd]}
+      createOrder={async () => {
+        console.log("Creating PayPal order:", { items, totalUsd });
         try {
-          const order = await actions.order?.capture();
-          if (!order) throw new Error("No order data");
+          const order = await createPayPalOrder(items, totalUsd);
+          if (!order || !order.id) {
+            throw new Error("Failed to create PayPal order");
+          }
+          return order.id;
+        } catch (error) {
+          console.error("Error creating PayPal order:", error);
+          toast({
+            title: "Error",
+            description: "Error al crear la orden de PayPal",
+            variant: "destructive"
+          });
+          throw error;
+        }
+      }}
+      onApprove={async (data) => {
+        try {
+          console.log("PayPal onApprove data:", data);
+          
+          const captureData = await capturePayPalOrder(data.orderID);
+          console.log("PayPal capture result:", captureData);
 
-          await createOrder({
-            items: cart.cartItems.map(item => ({
-              ...item,
-              quantity: quantities[item.id] || item.quantity
-            })),
-            total: total,
-            paymentID: order.id ?? "",
+          if (!captureData || captureData.status !== 'COMPLETED') {
+            throw new Error(captureData.message || 'Error al procesar el pago');
+          }
+
+          const orderResult = await createOrder({
+            items: cart.cartItems,
+            total,
+            paymentID: data.orderID,
             paymentState: "exito",
             state: "procesando",
-            shippingAddres: order.purchase_units?.[0]?.shipping
+            shippingAddres: captureData.purchase_units?.[0]?.shipping || {}
           });
 
-          if (onSuccess) await onSuccess();
-          
+          if (!orderResult) {
+            throw new Error("Error al crear la orden");
+          }
+
+          await serverCleanCart();
           toast({
             title: "¡Compra exitosa!",
             description: "Tu orden ha sido procesada correctamente."
           });
 
-          router.push("/success");
+          if (onSuccess) await onSuccess();
+          router.push('/success');
+
         } catch (error) {
-          console.error("PayPal Error:", error);
+          console.error("Error:", error);
           toast({
             title: "Error",
             description: "Error procesando el pago",

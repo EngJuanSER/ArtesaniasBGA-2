@@ -42,26 +42,6 @@ export async function serverAddToCartAction(
   }
 }
 
-export async function serverUpdateCartItemQuantity(
-  cartItemId: number,
-  quantity: number
-): Promise<{ ok: boolean; error?: string; data?: any }> {
-  try {
-    const result = await updateCartItemQuantity(cartItemId, quantity);
-    
-    if (!result.ok) {
-      return { ok: false, error: result.error };
-    }
-
-    revalidatePath("/cart");
-    return { ok: true, data: result.data };
-  } catch (error: any) {
-    return { 
-      ok: false, 
-      error: error.message || "Error al actualizar cantidad" 
-    };
-  }
-}
 export async function serverDeleteCartItem(
   cartItemId: number
 ): Promise<{ ok: boolean; error?: string; data?: any }> {
@@ -78,6 +58,25 @@ export async function serverDeleteCartItem(
     return { 
       ok: false, 
       error: error.message || "Error al eliminar producto" 
+    };
+  }
+}
+
+export async function serverCleanCart(): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const cart = await fetchUserCart();
+    if (!cart) return { ok: false, error: "No se encontró el carrito" };
+
+    for (const item of cart.cartItems) {
+      await deleteCartItem(item.id);
+    }
+
+    revalidatePath("/cart");
+    return { ok: true };
+  } catch (error: any) {
+    return { 
+      ok: false, 
+      error: error.message || "Error al limpiar carrito" 
     };
   }
 }

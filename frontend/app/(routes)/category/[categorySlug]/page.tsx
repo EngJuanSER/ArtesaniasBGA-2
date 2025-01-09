@@ -2,9 +2,10 @@
 import { useGetCategoryProduct } from "@/hooks/useGetCategoryProduct";
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
-import FiltersControlsCategory from "../components/filters-controls-category";
+import { useMemo } from "react";
+import FiltersControls from "@/components/filters-controls";
 import SkeletonSchema from "@/components/skeletonSchema";
-import ProductCard from "../components/product-card";
+import ProductCard from "@/components/product-card";
 import { useProductFilter } from "@/hooks/useProducFilter";
 
 export default function Page() {
@@ -13,21 +14,13 @@ export default function Page() {
   const { result, loading, error } = useGetCategoryProduct(categorySlug || "");
   const { filteredProducts, setFilters } = useProductFilter(result || []);
 
-  if (loading) {
-    return (
-      <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
-        <SkeletonSchema grid={3} />
-      </div>
-    );
-  }
+  const maxPrice = useMemo(() => {
+    if (!result?.length) return 0;
+    return Math.max(...result.map(p => p.offer ? (p.priceOffer || p.price) : p.price));
+  }, [result]);
 
-  if (error) {
-    return (
-      <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
-        <div className="text-red-500">Error: {error}</div>
-      </div>
-    );
-  }
+  if (loading) return <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24"><SkeletonSchema grid={3} /></div>;
+  if (error) return <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24"><div className="text-red-500">Error: {error}</div></div>;
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
@@ -39,17 +32,20 @@ export default function Page() {
       <Separator />
 
       <div className="sm:flex sm:justify-between">
-        <FiltersControlsCategory 
-          setFilterOrigin={(value) => {
-            setFilters((prev) => ({ ...prev, origin: value }));
-          }}
+        <FiltersControls 
+          setFilterOrigin={(value) => setFilters(prev => ({ ...prev, origin: value }))}
+          setFilterSearch={(value) => setFilters(prev => ({ ...prev, searchText: value }))}
+          setFilterPrice={(range) => setFilters(prev => ({ ...prev, priceRange: range }))}
+          setSortBy={(value) => setFilters(prev => ({ ...prev, sortBy: value }))}
+          maxPrice={maxPrice}
         />
 
-        <div className="grid gap-5 mt-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
+        <div className="grid gap-3 mt-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 flex-1">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))
+              <div key={product.id} className="h-min">
+                <ProductCard product={product} />
+              </div>))
           ) : (
             <p>No hay productos con estos filtros.</p>
           )}

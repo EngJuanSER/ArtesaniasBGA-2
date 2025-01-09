@@ -4,12 +4,11 @@ import ProductTasteOrigin from "@/components/shared/product-origin";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/formatPrice";
 import { ProductType } from "@/types/product";
-import { Heart } from "lucide-react";
 import { AddToCartForm } from "./cartForm";
 import { WishlistForm } from "./wishlistForm";
 
 export type InfoProductProps = {
-  product: ProductType; // Incluye { slug, price, productName, etc. }
+  product: ProductType; 
 };
 
 const InfoProduct = ({ product }: InfoProductProps) => {
@@ -22,7 +21,17 @@ const InfoProduct = ({ product }: InfoProductProps) => {
       <Separator className="my-4" />
       <p>{product.description}</p>
       <Separator className="my-4" />
-      <p className="my-4 text-2xl">{formatPrice(product.price)}</p>
+      <p className="my-4 text-2xl">        {product.offer ? (
+          <span>
+            <span className="line-through text-gray-500 mr-2">
+              {formatPrice(product.price)}
+            </span>
+            {formatPrice(product.priceOffer)}
+          </span>
+        ) : (
+          formatPrice(product.price)
+        )}
+      </p>
       <div className="flex items-center gap-5">
         <AddToCartForm productSlug={product.slug} />
         <WishlistForm productSlug={product.slug} />
