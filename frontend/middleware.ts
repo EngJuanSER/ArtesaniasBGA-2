@@ -4,6 +4,7 @@ import { getUserMeLoader } from "@/services/userService";
 
 const protectedRoutes = [
   "/profile",
+  "/success"
 ];
 
 function isProtectedRoute(path: string): boolean {

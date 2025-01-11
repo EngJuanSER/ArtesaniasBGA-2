@@ -97,7 +97,13 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::report.report",
-      "mappedBy": "generateBy"
+      "mappedBy": "user"
+    },
+    "user_actions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-action.user-action",
+      "mappedBy": "user"
     }
   }
 }

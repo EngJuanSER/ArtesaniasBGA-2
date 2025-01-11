@@ -579,12 +579,17 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_actions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-action.user-action'
+    >;
   };
 }
 
 export interface ApiReportReport extends Struct.CollectionTypeSchema {
   collectionName: 'reports';
   info: {
+    description: '';
     displayName: 'Report';
     pluralName: 'reports';
     singularName: 'report';
@@ -596,12 +601,11 @@ export interface ApiReportReport extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    data: Schema.Attribute.JSON;
     dataRange: Schema.Attribute.JSON;
-    generateBy: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
+    filters: Schema.Attribute.JSON;
+    format: Schema.Attribute.Enumeration<['pdf', 'excel', 'json']> &
+      Schema.Attribute.DefaultTo<'json'>;
+    information: Schema.Attribute.JSON;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -609,12 +613,20 @@ export interface ApiReportReport extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    state: Schema.Attribute.Enumeration<
+      ['pendiente', 'procesando', 'completado', 'fallido']
+    >;
+    title: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<
-      ['ventas', 'inventario', 'comportamiento']
+      ['ventas', 'inventario', 'comportamiento', 'productos_vendidos']
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -644,6 +656,50 @@ export interface ApiResenaResena extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiUserActionUserAction extends Struct.CollectionTypeSchema {
+  collectionName: 'user_actions';
+  info: {
+    displayName: 'UserAction';
+    pluralName: 'user-actions';
+    singularName: 'user-action';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    details: Schema.Attribute.JSON;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-action.user-action'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    timestamp: Schema.Attribute.DateTime;
+    type: Schema.Attribute.Enumeration<
+      [
+        'view_product',
+        'add_to_cart',
+        'remove_from_cart',
+        'add_to_whislist',
+        'search',
+        'purchase',
+      ]
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1218,6 +1274,10 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_actions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-action.user-action'
+    >;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
@@ -1245,6 +1305,7 @@ declare module '@strapi/strapi' {
       'api::product.product': ApiProductProduct;
       'api::report.report': ApiReportReport;
       'api::resena.resena': ApiResenaResena;
+      'api::user-action.user-action': ApiUserActionUserAction;
       'api::wish-item.wish-item': ApiWishItemWishItem;
       'api::wishlist.wishlist': ApiWishlistWishlist;
       'plugin::content-releases.release': PluginContentReleasesRelease;

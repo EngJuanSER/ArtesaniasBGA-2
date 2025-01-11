@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_actions",
+  "info": {
+    "singularName": "user-action",
+    "pluralName": "user-actions",
+    "displayName": "UserAction"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "view_product",
+        "add_to_cart",
+        "remove_from_cart",
+        "add_to_whislist",
+        "search",
+        "purchase"
+      ]
+    },
+    "details": {
+      "type": "json"
+    },
+    "timestamp": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_actions"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "user_actions"
+    }
+  }
+}

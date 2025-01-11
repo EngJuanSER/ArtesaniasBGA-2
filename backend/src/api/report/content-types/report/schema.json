@@ -4,7 +4,8 @@
   "info": {
     "singularName": "report",
     "pluralName": "reports",
-    "displayName": "Report"
+    "displayName": "Report",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,20 +17,45 @@
       "enum": [
         "ventas",
         "inventario",
-        "comportamiento"
+        "comportamiento",
+        "productos_vendidos"
       ]
     },
     "dataRange": {
       "type": "json"
     },
-    "data": {
+    "information": {
       "type": "json"
     },
-    "generateBy": {
+    "filters": {
+      "type": "json"
+    },
+    "format": {
+      "type": "enumeration",
+      "enum": [
+        "pdf",
+        "excel",
+        "json"
+      ],
+      "default": "json"
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": [
+        "pendiente",
+        "procesando",
+        "completado",
+        "fallido"
+      ]
+    },
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "reports"
+    },
+    "title": {
+      "type": "string"
     }
   }
 }
