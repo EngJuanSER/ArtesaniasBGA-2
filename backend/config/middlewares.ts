@@ -9,4 +9,10 @@ export default [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  {
+    name: 'global::track-user-actions',
+    config: {
+      enabled: true
+    }
+  }
 ];

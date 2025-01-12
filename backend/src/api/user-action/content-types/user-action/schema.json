@@ -4,7 +4,8 @@
   "info": {
     "singularName": "user-action",
     "pluralName": "user-actions",
-    "displayName": "UserAction"
+    "displayName": "UserAction",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -19,7 +20,8 @@
         "remove_from_cart",
         "add_to_whislist",
         "search",
-        "purchase"
+        "purchase",
+        "filter_use"
       ]
     },
     "details": {
@@ -32,13 +34,13 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "user_actions"
+      "inversedBy": "actions"
     },
     "product": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",
-      "inversedBy": "user_actions"
+      "inversedBy": "actions"
     }
   }
 }

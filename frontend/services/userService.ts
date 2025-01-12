@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@/services/apiService";
 import { getAuthToken } from "@/services/tokenService";
 
 export async function getUserMeLoader() {
-  const url = new URL("/api/users/me", API_BASE_URL);
+  const url = new URL("/api/users/me?populate=role", API_BASE_URL);
   const authToken = await getAuthToken();
 
   if (!authToken) {

@@ -86,7 +86,7 @@
     "priceOffer": {
       "type": "decimal"
     },
-    "user_actions": {
+    "actions": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::user-action.user-action",

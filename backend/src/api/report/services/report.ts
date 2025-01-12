@@ -1,6 +1,5 @@
 "use strict";
 
-
 import { factories } from '@strapi/strapi';
 import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
@@ -18,6 +17,45 @@ interface ProductoVisto {
     vistas: number;
     agregadosCarrito: number;
     }
+
+interface VentaPorDia {
+  total: number;
+  ordenes: number;
+}
+
+interface ReportData {
+  periodo?: {
+    inicio: string;
+    fin: string;
+  };
+  resumen?: {
+    totalVentas?: number;
+    numeroOrdenes?: number;
+    promedioOrden?: number;
+    totalProductos?: number;
+    valorInventario?: number;
+    totalAcciones?: number;
+    totalVisitas?: number;
+    accionesPorTipo?: Record<string, number>;
+    categorias?: Record<string, { cantidad: number; valorTotal: number }>;
+  };
+  ventasPorDia?: Record<string, VentaPorDia>;
+  productosMasVendidos?: ProductVendido[];
+  productosBajoStock?: Array<{
+    id: number;
+    nombre: string;
+    stock: number;
+    categoria: string;
+  }>;
+  detalleProductos?: Array<{
+    id: number;
+    nombre: string;
+    stock: number;
+    precio: number;
+    categoria: string;
+  }>;
+  productosMasVistos?: ProductoVisto[];
+}
 
 module.exports = createCoreService("api::report.report", ({ strapi }) => ({
     async addToQueue(report) {
@@ -41,38 +79,121 @@ module.exports = createCoreService("api::report.report", ({ strapi }) => ({
         }
       },
 
-    async generatePDF(data) {
-    return new Promise((resolve) => {
-        const PDFDocument = require('pdfkit');
-        const doc = new PDFDocument();
-        const chunks = [];
-
-        doc.on('data', chunk => chunks.push(chunk));
-        doc.on('end', () => resolve(Buffer.concat(chunks)));
-
-        doc.fontSize(20).text('Reporte', { align: 'center' });
-        
-        if (data.resumen?.totalVentas) {
-        doc.fontSize(14).text(`Total Ventas: $${data.resumen.totalVentas}`);
-        }
-
-        doc.end();
-    });
-    },
-
-    async generateExcel(data) {
+      async generatePDF(data: ReportData) {
+        return new Promise((resolve) => {
+          const PDFDocument = require('pdfkit');
+          const doc = new PDFDocument();
+          const chunks = [];
+      
+          doc.on('data', chunk => chunks.push(chunk));
+          doc.on('end', () => resolve(Buffer.concat(chunks)));
+      
+          // Encabezado
+          doc.fontSize(20).text('ArtesaníasBGA - Reporte', { align: 'center' });
+          doc.moveDown();
+          doc.fontSize(12).text(`Generado: ${new Date().toLocaleString()}`, { align: 'right' });
+          doc.moveDown();
+      
+          // Periodo del reporte
+          if (data.periodo) {
+            doc.fontSize(14).text('Periodo del Reporte');
+            doc.fontSize(12).text(`Desde: ${new Date(data.periodo.inicio).toLocaleDateString()}`);
+            doc.text(`Hasta: ${new Date(data.periodo.fin).toLocaleDateString()}`);
+            doc.moveDown();
+          }
+      
+          // Resumen
+          if (data.resumen) {
+            doc.fontSize(14).text('Resumen');
+            Object.entries(data.resumen).forEach(([key, value]) => {
+              if (typeof value === 'number') {
+                doc.fontSize(12).text(`${key}: ${value.toLocaleString('es-CO', {
+                  style: 'currency',
+                  currency: 'COP'
+                })}`);
+              } else {
+                doc.fontSize(12).text(`${key}: ${value}`);
+              }
+            });
+            doc.moveDown();
+          }
+      
+          // Detalles específicos según tipo de reporte
+          if (data.ventasPorDia) {
+            doc.fontSize(14).text('Ventas por Día');
+            Object.entries(data.ventasPorDia).forEach(([fecha, info]) => {
+              doc.fontSize(12).text(`${fecha}: ${info.total.toLocaleString('es-CO', {
+                style: 'currency',
+                currency: 'COP'
+              })} (${info.ordenes} órdenes)`);
+            });
+          }
+      
+          if (data.productosMasVendidos) {
+            doc.addPage();
+            doc.fontSize(14).text('Productos Más Vendidos');
+            data.productosMasVendidos.forEach((producto, index) => {
+              doc.fontSize(12).text(`${index + 1}. ${producto.nombre}`);
+              doc.fontSize(10)
+                .text(`   Cantidad: ${producto.cantidad}`);
+              doc.text(`   Total: ${producto.total.toLocaleString('es-CO', {
+                style: 'currency',
+                currency: 'COP'
+              })}`);
+            });
+          }
+      
+          doc.end();
+        });
+      },
+      
+      async generateExcel(data: ReportData) {
         const ExcelJS = require('exceljs');
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Reporte');
-    
-        if (data.resumen?.totalVentas) {
-          worksheet.columns = [
+        
+        // Hoja de Resumen
+        const resumenSheet = workbook.addWorksheet('Resumen');
+        if (data.resumen) {
+          resumenSheet.addRow(['Métricas Generales']);
+          Object.entries(data.resumen).forEach(([key, value]) => {
+            resumenSheet.addRow([key, value]);
+          });
+        }
+      
+        // Hoja de Ventas por Día
+        if (data.ventasPorDia) {
+          const ventasSheet = workbook.addWorksheet('Ventas por Día');
+          ventasSheet.columns = [
             { header: 'Fecha', key: 'fecha' },
             { header: 'Total', key: 'total' },
             { header: 'Órdenes', key: 'ordenes' }
           ];
+      
+          Object.entries(data.ventasPorDia).forEach(([fecha, info]) => {
+            ventasSheet.addRow({
+              fecha,
+              total: info.total,
+              ordenes: info.ordenes
+            });
+          });
         }
-    
+      
+        // Hoja de Productos
+        if (data.productosMasVendidos || data.detalleProductos) {
+          const productosSheet = workbook.addWorksheet('Productos');
+          productosSheet.columns = [
+            { header: 'Nombre', key: 'nombre' },
+            { header: 'Cantidad', key: 'cantidad' },
+            { header: 'Total', key: 'total' }
+          ];
+      
+          if (data.productosMasVendidos) {
+            data.productosMasVendidos.forEach(producto => {
+              productosSheet.addRow(producto);
+            });
+          }
+        }
+      
         return await workbook.xlsx.writeBuffer();
       },
 

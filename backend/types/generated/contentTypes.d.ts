@@ -527,6 +527,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    actions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-action.user-action'
+    >;
     active: Schema.Attribute.Boolean;
     category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
     comments: Schema.Attribute.Relation<'oneToMany', 'api::resena.resena'>;
@@ -579,10 +583,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_actions: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::user-action.user-action'
-    >;
   };
 }
 
@@ -662,6 +662,7 @@ export interface ApiResenaResena extends Struct.CollectionTypeSchema {
 export interface ApiUserActionUserAction extends Struct.CollectionTypeSchema {
   collectionName: 'user_actions';
   info: {
+    description: '';
     displayName: 'UserAction';
     pluralName: 'user-actions';
     singularName: 'user-action';
@@ -691,6 +692,7 @@ export interface ApiUserActionUserAction extends Struct.CollectionTypeSchema {
         'add_to_whislist',
         'search',
         'purchase',
+        'filter_use',
       ]
     >;
     updatedAt: Schema.Attribute.DateTime;
@@ -1228,6 +1230,10 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    actions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-action.user-action'
+    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1274,10 +1280,6 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_actions: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::user-action.user-action'
-    >;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &

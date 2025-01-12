@@ -34,3 +34,24 @@ export async function fetchProductSlugStock(slug: string): Promise<number> {
   return data.stock;
 }
 
+export async function createProduct(data: Partial<ProductType>): Promise<ProductType> {
+  const response = await fetcher('/api/products', {
+    method: 'POST',
+    body: JSON.stringify({ data }),
+  });
+  return response.data;
+}
+
+export async function updateProduct(id: number, data: Partial<ProductType>): Promise<ProductType> {
+  const response = await fetcher(`/api/products/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ data }),
+  });
+  return response.data;
+}
+
+export async function deleteProduct(id: number): Promise<void> {
+  await fetcher(`/api/products/${id}`, {
+    method: 'DELETE',
+  });
+}
