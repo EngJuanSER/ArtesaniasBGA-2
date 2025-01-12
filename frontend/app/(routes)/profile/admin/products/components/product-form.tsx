@@ -21,13 +21,39 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { useToast } from "@/components/ui/use-toast";
 import { createProduct, updateProduct } from "@/services/productService";
 import { API_BASE_URL } from "@/services/apiService";
+import { useGetCategories } from "@/hooks/useGetCategories";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const origins = [
+  "Usaquén",
+  "Chapinero",
+  "Santa Fe",
+  "San Cristóbal",
+  "Usme",
+  "Tunjuelito",
+  "Bosa",
+  "Kennedy",
+  "Fontibón",
+  "Engativá",
+  "Suba",
+  "Barrios Unidos",
+  "Teusaquillo",
+  "Los Mártires",
+  "Antonio Nariño",
+  "Puente Aranda",
+  "La Candelaria",
+  "Rafael Uribe Uribe",
+  "Ciudad Bolívar",
+  "Sumapaz"
+];
 
 const formSchema = z.object({
   productName: z.string().min(1, "Nombre requerido"),
   description: z.string().min(1, "Descripción requerida"),
   price: z.number().min(0, "Precio debe ser mayor a 0"),
   stock: z.number().min(0, "Stock debe ser mayor o igual a 0"),
-  origin: z.string(),
+  origin: z.string().min(1, "Origen requerido"),
+  category: z.number().nullable(),
   active: z.boolean(),
   images: z.array(z.object({ url: z.string() })).optional(),
 });
@@ -38,18 +64,24 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ product, onClose }: ProductFormProps) {
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: product || {
-        productName: "",
-        description: "",
-        price: 0,
-        stock: 0,
-        origin: "",
-        active: true,
-        images: [],
-      },
-    });
+      const { toast } = useToast(); 
+      const { result: categories } = useGetCategories();
+      const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: product ? {
+          ...product,
+          category: product.category?.id || null,
+        } : {
+          productName: "",
+          description: "",
+          price: 0,
+          stock: 0,
+          origin: "",
+          category: null,
+          active: true,
+          images: [],
+        },
+      });
   
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -116,9 +148,47 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Origen</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un origen" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {origins.map((origin) => (
+                            <SelectItem key={origin} value={origin}>
+                              {origin}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Categoría</FormLabel>
+                      <Select 
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona una categoría" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories?.map((category) => (
+                            <SelectItem 
+                              key={category.id} 
+                              value={category.id.toString()}
+                            >
+                              {category.categoryName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -147,8 +217,14 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                     <FormItem>
                       <FormLabel>Stock</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field}
-                          onChange={e => field.onChange(parseInt(e.target.value))}
+                        <Input 
+                          type="number"
+                          {...field}
+                          value={field.value || ''}
+                          onChange={(e) => {
+                            const value = e.target.value ? parseInt(e.target.value) : 0;
+                            field.onChange(value);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

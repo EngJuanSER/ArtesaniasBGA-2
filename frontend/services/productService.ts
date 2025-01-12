@@ -45,7 +45,21 @@ export async function createProduct(data: Partial<ProductType>): Promise<Product
 export async function updateProduct(id: number, data: Partial<ProductType>): Promise<ProductType> {
   const response = await fetcher(`/api/products/${id}`, {
     method: 'PUT',
-    body: JSON.stringify({ data }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data: {
+        ...data,
+        // Asegurarnos que category sea un objeto con id
+        category: data.category ? { id: data.category } : undefined,
+        // Formatear las imágenes correctamente
+        images: data.images?.map(img => ({
+          ...img,
+          url: img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
+        }))
+      }
+    }),
   });
   return response.data;
 }
