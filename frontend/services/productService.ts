@@ -34,38 +34,3 @@ export async function fetchProductSlugStock(slug: string): Promise<number> {
   return data.stock;
 }
 
-export async function createProduct(data: Partial<ProductType>): Promise<ProductType> {
-  const response = await fetcher('/api/products', {
-    method: 'POST',
-    body: JSON.stringify({ data }),
-  });
-  return response.data;
-}
-
-export async function updateProduct(id: number, data: Partial<ProductType>): Promise<ProductType> {
-  const response = await fetcher(`/api/products/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      data: {
-        ...data,
-        // Asegurarnos que category sea un objeto con id
-        category: data.category ? { id: data.category } : undefined,
-        // Formatear las imágenes correctamente
-        images: data.images?.map(img => ({
-          ...img,
-          url: img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
-        }))
-      }
-    }),
-  });
-  return response.data;
-}
-
-export async function deleteProduct(id: number): Promise<void> {
-  await fetcher(`/api/products/${id}`, {
-    method: 'DELETE',
-  });
-}

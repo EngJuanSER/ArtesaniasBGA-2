@@ -19,10 +19,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { useToast } from "@/components/ui/use-toast";
-import { createProduct, updateProduct } from "@/services/productService";
 import { API_BASE_URL } from "@/services/apiService";
 import { useGetCategories } from "@/hooks/useGetCategories";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { serverCreateProduct, serverUpdateProduct } from "@/data/actions/product-actions";
+
 
 const origins = [
   "Usaquén",
@@ -71,6 +72,8 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
         defaultValues: product ? {
           ...product,
           category: product.category?.id || null,
+          price: Number(product.price),
+          stock: Number(product.stock),
         } : {
           productName: "",
           description: "",
@@ -83,41 +86,44 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
         },
       });
   
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+      const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            if (product) {
-                // Actualizar producto existente
-                await updateProduct(product.id, {
-                    ...values,
-                    slug: values.productName.toLowerCase().replace(/ /g, '-'),
-                });
-                toast({
-                    title: "Éxito",
-                    description: "Producto actualizado correctamente",
-                });
-            } else {
-                // Crear nuevo producto
-                await createProduct({
-                    ...values,
-                    slug: values.productName.toLowerCase().replace(/ /g, '-'),
-                });
-                toast({
-                    title: "Éxito",
-                    description: "Producto creado correctamente",
-                });
-            }
-            onClose();
-            // Forzar recarga de productos
-            window.location.reload();
-        } catch (error) {
-            console.error(error);
-            toast({
-                title: "Error",
-                description: "Error al guardar el producto",
-                variant: "destructive",
+          if (product) {
+            const result = await serverUpdateProduct(product.id, {
+              ...values,
+              slug: values.productName.toLowerCase().replace(/ /g, '-'),
             });
+            
+            if (!result.ok) throw new Error(result.error || "Error al actualizar");
+            
+            toast({
+              title: "Éxito",
+              description: "Producto actualizado correctamente",
+            });
+          } else {
+            const result = await serverCreateProduct({
+              ...values,
+              slug: values.productName.toLowerCase().replace(/ /g, '-'),
+            });
+            
+            if (!result.ok) throw new Error(result.error || "Error al crear");
+            
+            toast({
+              title: "Éxito",
+              description: "Producto creado correctamente",
+            });
+          }
+          onClose();
+          window.location.reload();
+        } catch (error: any) {
+          console.error('Form error:', error);
+          toast({
+            title: "Error",
+            description: error.message || "Error al guardar el producto",
+            variant: "destructive",
+          });
         }
-    };
+      };
   
     return (
       <Dialog open onOpenChange={onClose}>
@@ -222,7 +228,7 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                           {...field}
                           value={field.value || ''}
                           onChange={(e) => {
-                            const value = e.target.value ? parseInt(e.target.value) : 0;
+                            const value = e.target.value ? parseInt(e.target.value, 10) : 0;
                             field.onChange(value);
                           }}
                         />

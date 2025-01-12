@@ -28,7 +28,7 @@ export function ImageUpload({
 
       // Generar nombre único para la imagen
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
       const filePath = `products/${fileName}`;
 
       // Subir archivo a Supabase Storage
@@ -36,16 +36,25 @@ export function ImageUpload({
         .from('products')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError); // Debug
+          throw uploadError;
+        }
 
       // Obtener URL pública
-      const { data } = supabase.storage
+      const { data: urlData } = supabase.storage
         .from('products')
         .getPublicUrl(filePath);
 
-      if (data.publicUrl) {
-        onChange(data.publicUrl);
+      console.log('URL data:', urlData); // Debug
+
+
+      if (urlData?.publicUrl) {
+        onChange(urlData.publicUrl);
+      } else {
+        throw new Error('No se pudo obtener la URL pública');
       }
+  
 
     } catch (error) {
       console.error('Error uploading:', error);

@@ -14,6 +14,8 @@ export function ProductList() {
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
+  console.log(products);
+
   if (loading) return <div>Cargando...</div>;
 
   return (
