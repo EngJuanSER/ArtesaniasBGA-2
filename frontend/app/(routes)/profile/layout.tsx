@@ -28,8 +28,8 @@ export default async function DashboardLayout({
                             className="flex items-center gap-2 font-semibold text-primary"
                             href="/profile"
                         >
-                            <LayoutDashboard className="h-6 w-6" />
-                            <span className="">Dashboard</span>
+                            <User className="h-6 w-6" />
+                            <span className="">Perfil</span>
                         </Link>
                     </div>
                     <div className="flex-1 py-2">

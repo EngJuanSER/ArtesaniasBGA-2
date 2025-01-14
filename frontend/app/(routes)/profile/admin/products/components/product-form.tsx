@@ -49,14 +49,24 @@ const origins = [
 ];
 
 const formSchema = z.object({
-  productName: z.string().min(1, "Nombre requerido"),
-  description: z.string().min(1, "Descripción requerida"),
-  price: z.number().min(0, "Precio debe ser mayor a 0"),
-  stock: z.number().min(0, "Stock debe ser mayor o igual a 0"),
+  productName: z.string()
+    .min(3, "Nombre debe tener al menos 3 caracteres")
+    .max(100, "Nombre muy largo"),
+  description: z.string()
+    .min(10, "Descripción debe tener al menos 10 caracteres")
+    .max(1000, "Descripción muy larga"),
+  price: z.number()
+    .min(1000, "Precio mínimo es $1,000")
+    .max(10000000, "Precio máximo es $10,000,000"),
+  stock: z.number()
+    .min(0, "Stock no puede ser negativo")
+    .max(999, "Stock máximo es 999"),
   origin: z.string().min(1, "Origen requerido"),
   category: z.number().nullable(),
   active: z.boolean(),
-  images: z.array(z.custom<ImageType>()).optional(),
+  images: z.array(z.custom<ImageType>())
+    .min(1, "Al menos una imagen es requerida")
+    .max(5, "Máximo 5 imágenes permitidas"),
 });
 
 interface ProductFormProps {

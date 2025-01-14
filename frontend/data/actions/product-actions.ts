@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { ProductType } from "@/types/product";
+import { createProduct, updateProduct, deleteProduct } from "@/services/productService";
 import { fetcher } from "@/services/apiService";
 
 interface ProductState {
@@ -10,6 +11,7 @@ interface ProductState {
   error: string | null;
   data?: ProductType | null;
 }
+
 
 export async function serverCreateProduct(
   data: Partial<ProductType>
@@ -22,27 +24,22 @@ export async function serverCreateProduct(
       return { ok: false, error: "No autorizado" };
     }
 
-    const response = await fetcher('/api/products', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: {
-          ...data,
-          category: data.category ? { id: data.category } : undefined,
-          images: data.images?.map(img => ({
-            url: img.url.startsWith('http') 
-              ? img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
-              : img.url
-          }))
-        }
-      }),
-    });
+    if (!data.images?.length) {
+      return { ok: false, error: "Al menos una imagen es requerida" };
+    }
+
+    if (data.price && data.price > 10000000) {
+      return { ok: false, error: "Precio excede el límite permitido" };
+    }
+
+    const result = await createProduct(data);
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
+    }
 
     revalidatePath('/profile/admin/products');
-    return { ok: true, error: null, data: response.data };
+    return { ok: true, error: null, data: result.data };
   } catch (error: any) {
     return { 
       ok: false, 
@@ -64,27 +61,27 @@ export async function serverUpdateProduct(
       return { ok: false, error: "No autorizado" };
     }
 
-    const response = await fetcher(`/api/products/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: {
-          ...data,
-          category: data.category ? { id: data.category } : undefined,
-          images: data.images?.map(img => ({
-            url: img.url.startsWith('http') 
-              ? img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
-              : img.url
-          }))
-        }
-      }),
-    });
+    // Validaciones
+    if (!data.productName?.trim()) {
+      return { ok: false, error: "Nombre del producto es requerido" };
+    }
+
+    if (data.price && (data.price <= 0 || data.price > 10000000)) {
+      return { ok: false, error: "Precio inválido" };
+    }
+
+    if (data.stock && (data.stock < 0 || data.stock > 999)) {
+      return { ok: false, error: "Stock inválido" };
+    }
+
+    const result = await updateProduct(id, data);
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
+    }
 
     revalidatePath('/profile/admin/products');
-    return { ok: true, error: null, data: response.data };
+    return { ok: true, error: null, data: result.data };
   } catch (error: any) {
     return { 
       ok: false, 
@@ -116,17 +113,15 @@ export async function serverDeleteProduct(
       return { ok: false, error: "Producto no encontrado" };
     }
 
-    await fetcher(`/api/products/${data[0].id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
+    const result = await deleteProduct(data[0].id);
+    
+    if (!result.ok) {
+      return { ok: false, error: result.error };
+    }
 
     revalidatePath('/profile/admin/products');
-    return { ok: true, error: null };
+    return { ok: true, error: null, data: result.data };
   } catch (error: any) {
-    console.error('Error deleting product:', error);
     return { 
       ok: false, 
       error: error.message || "Error al eliminar el producto",

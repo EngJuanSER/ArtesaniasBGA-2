@@ -16,22 +16,13 @@ export async function fetcher(url: string, options: RequestInit = {}) {
   const data = await res.json();
   
   if (!res.ok) {
-    const text = await res.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(`Error HTTP: ${res.status}`);
-    }
-    // Si es un error de Strapi
     if (data.error && typeof data.error === 'string') {
       throw new Error(data.error);
     }
-    // Si es un error con mensaje anidado
     if (data.error?.message) {
       throw new Error(data.error.message);
     }
-    throw new Error("Error en la operación");
+    throw new Error(`Error HTTP: ${res.status}`);
   }
 
   return data;

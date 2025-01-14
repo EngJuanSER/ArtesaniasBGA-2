@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ImagePlus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ImageUploadProps {
   disabled?: boolean;
@@ -19,45 +20,57 @@ export function ImageUpload({
   value
 }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setLoading(true);
       const file = e.target.files?.[0];
-      if (!file) return;
+      
+      if (!file) {
+        throw new Error('No se seleccionó ningún archivo');
+      }
 
-      // Generar nombre único para la imagen
+      // Validaciones
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('Imagen muy grande (máx 5MB)');
+      }
+
+      if (!file.type.startsWith('image/')) {
+        throw new Error('Solo se permiten imágenes');
+      }
+
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
       const filePath = `products/${fileName}`;
 
-      // Subir archivo a Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('products')
-        .upload(filePath, file);
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type
+        });
 
-        if (uploadError) {
-          console.error('Upload error:', uploadError); // Debug
-          throw uploadError;
-        }
+      if (uploadError) {
+        throw uploadError;
+      }
 
-      // Obtener URL pública
       const { data: urlData } = supabase.storage
         .from('products')
         .getPublicUrl(filePath);
 
-      console.log('URL data:', urlData); // Debug
-
-
-      if (urlData?.publicUrl) {
-        onChange(urlData.publicUrl);
-      } else {
-        throw new Error('No se pudo obtener la URL pública');
+      if (!urlData?.publicUrl) {
+        throw new Error('Error al obtener URL');
       }
-  
 
-    } catch (error) {
-      console.error('Error uploading:', error);
+      onChange(urlData.publicUrl);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Error al subir imagen"
+      });
     } finally {
       setLoading(false);
     }

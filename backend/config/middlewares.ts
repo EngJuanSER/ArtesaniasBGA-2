@@ -5,8 +5,7 @@ export default [
   {
     name: 'strapi::cors',
     config: {
-      enabled: true,
-      origin: ['https://potential-waffle-jj4qpxxjjgpgh5r5q-3000.app.github.dev'],
+      origin: [process.env.FRONTEND_URL],
       headers: [
         'Content-Type',
         'Authorization',
