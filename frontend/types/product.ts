@@ -56,6 +56,7 @@ export type FormatType = {
 };
 
 export type CategoryType = {
+  id: number;
   slug: string;
   categoryName: string;
 };

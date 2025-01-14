@@ -10,10 +10,8 @@ export function PayPalProvider({ children }: { children: React.ReactNode }) {
     locale: "es_CO",
     components: ["buttons"],
     dataNamespace: "PayPalSDK",
-    environment: "sandbox",
     disableFunding: ["card"],
     enableFunding: ["paypal"],
-    crossorigin: "anonymous",
   };
 
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { addProductBySlugToCart, updateCartItemQuantity, deleteCartItem, fetchUserCart } from "@/services/cartService";
+import { addProductBySlugToCart, deleteCartItem, fetchUserCart } from "@/services/cartService";
 
 interface CartState {
   ok: boolean;

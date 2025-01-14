@@ -6,13 +6,23 @@ export async function fetcher(url: string, options: RequestInit = {}) {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      'Origin': process.env.NEXT_PUBLIC_FRONTEND_URL || "",
+      'Accept': 'application/json',
       ...options.headers,
-    }
+    },
+    next: { revalidate: 0 } 
   });
 
   const data = await res.json();
   
   if (!res.ok) {
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Error HTTP: ${res.status}`);
+    }
     // Si es un error de Strapi
     if (data.error && typeof data.error === 'string') {
       throw new Error(data.error);

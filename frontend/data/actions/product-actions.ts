@@ -15,7 +15,7 @@ export async function serverCreateProduct(
   data: Partial<ProductType>
 ): Promise<ProductState> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get("jwt")?.value;
     
     if (!authToken) {
@@ -57,7 +57,7 @@ export async function serverUpdateProduct(
   data: Partial<ProductType>
 ): Promise<ProductState> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get("jwt")?.value;
     
     if (!authToken) {
@@ -98,7 +98,7 @@ export async function serverDeleteProduct(
   slug: string
 ): Promise<ProductState> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get("jwt")?.value;
     
     if (!authToken) {

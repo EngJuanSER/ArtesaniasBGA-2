@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ProductType } from "@/types/product";
+import { ImageType, ProductType } from "@/types/product";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -56,7 +56,7 @@ const formSchema = z.object({
   origin: z.string().min(1, "Origen requerido"),
   category: z.number().nullable(),
   active: z.boolean(),
-  images: z.array(z.object({ url: z.string() })).optional(),
+  images: z.array(z.custom<ImageType>()).optional(),
 });
 
 interface ProductFormProps {
@@ -88,26 +88,27 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
   
       const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
+          const productData: Partial<ProductType> = {
+            ...values,
+            slug: values.productName.toLowerCase().replace(/ /g, '-'),
+            stock: BigInt(values.stock),
+            images: values.images?.map(img => ({
+              ...img,
+              url: img.url,
+            })) as ImageType[],
+            category: values.category ? { id: values.category, slug: '', categoryName: '' } : null
+          };
+
           if (product) {
-            const result = await serverUpdateProduct(product.id, {
-              ...values,
-              slug: values.productName.toLowerCase().replace(/ /g, '-'),
-            });
-            
+            const result = await serverUpdateProduct(product.id, productData);
             if (!result.ok) throw new Error(result.error || "Error al actualizar");
-            
             toast({
               title: "Éxito",
               description: "Producto actualizado correctamente",
             });
           } else {
-            const result = await serverCreateProduct({
-              ...values,
-              slug: values.productName.toLowerCase().replace(/ /g, '-'),
-            });
-            
+            const result = await serverCreateProduct(productData);
             if (!result.ok) throw new Error(result.error || "Error al crear");
-            
             toast({
               title: "Éxito",
               description: "Producto creado correctamente",

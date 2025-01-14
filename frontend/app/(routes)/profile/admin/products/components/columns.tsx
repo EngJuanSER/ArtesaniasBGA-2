@@ -52,7 +52,7 @@ export const columns: ColumnDef<ProductType>[] = [
             if (confirm("¿Estás seguro de eliminar este producto?")) {
               try {
                 const result = await serverDeleteProduct(product.slug);
-                if (!result.ok) throw new Error(result.error);
+                if (!result.ok) throw new Error(result.error || 'Error desconocido');
                 window.location.reload();
               } catch (error: any) {
                 console.error("Error al eliminar:", error);
