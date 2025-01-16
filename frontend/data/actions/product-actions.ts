@@ -45,8 +45,16 @@ export async function serverCreateProduct(data: Partial<ProductType>): Promise<P
           ? img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
           : img.url
       })),
-      category: data.category ? { id: data.category } : undefined
+      // Modificar formato de categoría
+      category: data.category, // Solo enviar el ID
+      publishedAt: new Date(),
+      isFeatured: data.isFeatured || false,
+      offer: data.offer || false,
+      priceOffer: data.priceOffer || null
     };
+
+    console.log('Datos a enviar:', processedData); // Agregar log
+
 
     const response = await fetcher('/api/products', {
       method: 'POST',
@@ -56,6 +64,8 @@ export async function serverCreateProduct(data: Partial<ProductType>): Promise<P
       },
       body: JSON.stringify({ data: processedData })
     });
+
+    console.log('Respuesta:', response); // Agregar log
 
     if (!response.data) {
       // Si falla, eliminar las imágenes subidas
@@ -83,6 +93,13 @@ export async function serverUpdateProduct(
     const cookieStore = await cookies();
     const authToken = cookieStore.get("jwt")?.value;
     
+    const products = await fetcher(`/api/products?populate=*`);
+    const existingProduct = products.data?.find((p: ProductType) => p.id === id);
+
+    if (!existingProduct) {
+      return { ok: false, error: "Producto no encontrado" };
+    }
+
     if (!authToken) {
       return { ok: false, error: "No autorizado" };
     }
@@ -96,8 +113,16 @@ export async function serverUpdateProduct(
           ? img.url.replace(process.env.NEXT_PUBLIC_BACKEND_URL || '', '')
           : img.url
       })),
-      category: data.category ? { id: data.category } : undefined
+      // Modificar formato de categoría
+      category: data.category, // Solo enviar el ID
+      publishedAt: new Date(),
+      isFeatured: data.isFeatured || false,
+      offer: data.offer || false,
+      priceOffer: data.priceOffer || null
     };
+
+    console.log('Datos a enviar:', processedData); // Agregar log
+
 
     const response = await fetcher(`/api/products/${id}`, {
       method: 'PUT',
@@ -107,6 +132,8 @@ export async function serverUpdateProduct(
       },
       body: JSON.stringify({ data: processedData })
     });
+
+    console.log('Respuesta:', response); // Agregar log
 
     if (!response.data) {
       throw new Error("Error al actualizar producto");
@@ -124,7 +151,7 @@ export async function serverUpdateProduct(
 }
 
 export async function serverDeleteProduct(
-  id: number
+  slug: string
 ): Promise<ProductState> {
   try {
     const cookieStore = await cookies();
@@ -134,18 +161,6 @@ export async function serverDeleteProduct(
       return { ok: false, error: "No autorizado" };
     }
 
-    // Obtener el producto para obtener las imágenes antes de eliminar
-    const product = await fetcher(`/api/products/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (!product.data) {
-      return { ok: false, error: "Producto no encontrado" };
-    }
-
-    // Eliminar el producto
     const response = await fetcher(`/api/products/${id}`, {
       method: 'DELETE',
       headers: {
@@ -157,8 +172,7 @@ export async function serverDeleteProduct(
       throw new Error("Error al eliminar producto");
     }
 
-    // Eliminar imágenes asociadas
-    await cleanupImages(product.data.images);
+    await cleanupImages(product.data[0].images);
 
     revalidatePath('/profile/admin/products');
     return { ok: true, error: null, data: response.data };

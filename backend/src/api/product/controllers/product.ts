@@ -11,6 +11,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         publishedAt: new Date()
       };
 
+      console.log('Datos recibidos:', data);
+
       if (data.stock < 0) {
         return ctx.badRequest("El stock no puede ser negativo");
       }
@@ -23,6 +25,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         data,
         populate: ['images', 'category']
       });
+
+      console.log('Producto creado:', product);
 
       if (product.stock < 10) {
         await strapi.service('api::notification.notification').notifyLowStock(product);
@@ -61,26 +65,28 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   async delete(ctx) {
     try {
       const { id } = ctx.params;
-      
-      // Obtener el producto con sus imágenes
-      const product = await strapi.entityService.findOne("api::product.product", id, {
+    
+      // Buscar producto directamente por ID
+      const product = await strapi.db.query('api::product.product').findOne({
+        where: { id },
         populate: ['images']
       });
-
+  
       if (!product) {
-        return ctx.notFound("Producto no encontrado");
+        return ctx.notFound('Producto no encontrado');
       }
-
-      // Eliminar el producto
-      const deletedProduct = await strapi.entityService.delete("api::product.product", id);
-
-      // Registrar acción de eliminación
+  
+    // Eliminar usando el ID
+    const deletedProduct = await strapi.entityService.delete('api::product.product', product.id, {
+      populate: ['images']
+    });
+      
       await strapi.service('api::user-action.user-action').create({
         data: {
           type: 'delete_product',
           user: ctx.state.user.id,
           details: {
-            productId: id,
+            productId: product.id,
             productName: product.productName
           }
         }

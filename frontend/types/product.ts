@@ -15,9 +15,9 @@ export type ProductType = {
   publishedAt: string | null;
   stock: bigint;
   comments: CommentType[];
-  quantity: bigint;
   offer: boolean;
-  priceOffer: number;
+  priceOffer: number | null;
+  actions?: any[]; // Added as per schema, type can be refined if needed
 };
 
 export type ImageType = {

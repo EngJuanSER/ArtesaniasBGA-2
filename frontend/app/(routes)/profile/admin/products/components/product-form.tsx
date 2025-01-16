@@ -58,12 +58,15 @@ const formSchema = z.object({
   price: z.number()
     .min(1000, "Precio mínimo es $1,000")
     .max(10000000, "Precio máximo es $10,000,000"),
+  priceOffer: z.number().nullable(),
   stock: z.number()
     .min(0, "Stock no puede ser negativo")
     .max(999, "Stock máximo es 999"),
   origin: z.string().min(1, "Origen requerido"),
   category: z.number().nullable(),
   active: z.boolean(),
+  isFeatured: z.boolean(),
+  offer: z.boolean(),
   images: z.array(z.custom<ImageType>())
     .min(1, "Al menos una imagen es requerida")
     .max(5, "Máximo 5 imágenes permitidas"),
@@ -80,10 +83,17 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
       const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: product ? {
-          ...product,
+          productName: product.productName || '',
+          description: product.description || '',
+          price: Number(product.price) || 0,
+          stock: Number(product.stock) || 0,
+          origin: product.origin || '',
           category: product.category?.id || null,
-          price: Number(product.price),
-          stock: Number(product.stock),
+          active: product.active ?? true,
+          isFeatured: product.isFeatured ?? false,
+          offer: product.offer ?? false,
+          priceOffer: product.priceOffer ? Number(product.priceOffer) : null,
+          images: product.images || []
         } : {
           productName: "",
           description: "",
@@ -92,6 +102,9 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
           origin: "",
           category: null,
           active: true,
+          isFeatured: false,
+          offer: false,
+          priceOffer: 0,
           images: [],
         },
       });
@@ -101,13 +114,13 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
           const productData: Partial<ProductType> = {
             ...values,
             slug: values.productName.toLowerCase().replace(/ /g, '-'),
-            stock: BigInt(values.stock),
+            stock: Number(values.stock),
             price: Number(values.price),
             images: values.images?.map(img => ({
               ...img,
               url: img.url,
             })) as ImageType[],
-            category: values.category ? { id: values.category, slug: '', categoryName: '' } : null
+            category: values.category 
           };
 
           if (product) {
@@ -153,13 +166,15 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                     <FormItem>
                       <FormLabel>Nombre</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input 
+                          placeholder="Nombre del producto"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
                 <FormField
                   control={form.control}
                   name="origin"
@@ -211,7 +226,58 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                     </FormItem>
                   )}
                 />
-  
+                <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>Destacado</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="offer"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>En oferta</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {form.watch('offer') && (
+                <FormField
+                  control={form.control}
+                  name="priceOffer"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Precio de oferta</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field}
+                          value={field.value?.toString() || '0'}
+                          onChange={e => field.onChange(Number(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
                 <FormField
                   control={form.control}
                   name="price"
@@ -219,8 +285,12 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                     <FormItem>
                       <FormLabel>Precio</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} 
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
+                        <Input 
+                          type="number"
+                          placeholder="Ingrese el precio"
+                          {...field}
+                          value={field.value || ''}
+                          onChange={e => field.onChange(e.target.value ? Number(e.target.value) : '')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -235,15 +305,15 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                     <FormItem>
                       <FormLabel>Stock</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="number"
-                          {...field}
-                          value={field.value || ''}
-                          onChange={(e) => {
-                            const value = e.target.value ? parseInt(e.target.value, 10) : 0;
-                            field.onChange(value);
-                          }}
-                        />
+                      <Input 
+                        type="number"
+                        {...field}
+                        value={field.value?.toString() || ''} // Convertir a string
+                        onChange={(e) => {
+                          const value = e.target.value ? parseInt(e.target.value, 10) : 0;
+                          field.onChange(value);
+                        }}
+                      />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
