@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ImagePlus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabase";
+import { serverUploadImage } from "@/data/actions/product-actions";
 import { useToast } from "@/components/ui/use-toast";
 
 interface ImageUploadProps {
@@ -31,40 +31,13 @@ export function ImageUpload({
         throw new Error('No se seleccionó ningún archivo');
       }
 
-      // Validaciones
-      if (file.size > 5 * 1024 * 1024) {
-        throw new Error('Imagen muy grande (máx 5MB)');
+      const result = await serverUploadImage(file);
+
+      if (!result.ok || !result.url) {
+        throw new Error(result.error || 'Error al subir imagen');
       }
 
-      if (!file.type.startsWith('image/')) {
-        throw new Error('Solo se permiten imágenes');
-      }
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
-      const filePath = `products/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-          contentType: file.type
-        });
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-      const { data: urlData } = supabase.storage
-        .from('products')
-        .getPublicUrl(filePath);
-
-      if (!urlData?.publicUrl) {
-        throw new Error('Error al obtener URL');
-      }
-
-      onChange(urlData.publicUrl);
+      onChange(result.url);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -102,7 +75,7 @@ export function ImageUpload({
       <div className="flex items-center gap-4">
         <Button
           type="button"
-          disabled={disabled || loading}
+          disabled={disabled || loading || value.length >= 5}
           variant="secondary"
           onClick={() => document.getElementById('imageUpload')?.click()}
         >
@@ -115,7 +88,7 @@ export function ImageUpload({
           accept="image/*"
           className="hidden"
           onChange={handleUpload}
-          disabled={disabled || loading}
+          disabled={disabled || loading || value.length >= 5}
         />
       </div>
     </div>

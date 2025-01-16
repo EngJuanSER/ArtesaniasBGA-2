@@ -102,6 +102,7 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
             ...values,
             slug: values.productName.toLowerCase().replace(/ /g, '-'),
             stock: BigInt(values.stock),
+            price: Number(values.price),
             images: values.images?.map(img => ({
               ...img,
               url: img.url,
