@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: [
         process.env.NEXT_PUBLIC_BACKEND_URL || "",
         "localhost:3000",
-        "https://potential-waffle-jj4qpxxjjgpgh5r5q-3000.app.github.dev"
+        process.env.FRONTEND_URL || "",
       ],
     }
   }
