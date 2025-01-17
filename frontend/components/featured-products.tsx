@@ -57,9 +57,9 @@ const FeaturedProducts = () => {
               }
 
               const firstImage = images[0];
-              const imageUrl = firstImage?.url
-                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${firstImage.url}`
-                : "/ruta/a/imagen/default.jpg";
+                const imageUrl = firstImage?.url.startsWith('http')
+                ? firstImage.url
+                : `${process.env.NEXT_PUBLIC_BACKEND_URL}${firstImage.url}`;
 
               return (
                 <CarouselItem key={id} className="md:basis-1/2 lg:basis-1/3 group">

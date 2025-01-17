@@ -57,9 +57,9 @@ const ChooseCategory = () => {
               return null;
             }
 
-            const imageUrl = category.mainImage?.url
-              ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${category.mainImage.url}`
-              : "/ruta/a/imagen/default.jpg";
+            const imageUrl = category.mainImage?.url.startsWith('http')
+              ? category.mainImage.url
+              : `${process.env.NEXT_PUBLIC_BACKEND_URL}${category.mainImage?.url}`;
 
             return (
               <Link

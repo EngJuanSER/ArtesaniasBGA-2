@@ -47,7 +47,7 @@ const ProductCard = (props: ProductCardProps) => {
                             <CarouselItem key={image.id} className="group">
                                 <div className="relative h-[300px] w-full">
                                     <img
-                                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
+                                        src={image.url.startsWith('http') ? image.url : `${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
                                         alt={image.alternativeText || "Image"}
                                         className="absolute inset-0 w-full h-full object-cover rounded-xl"
                                     />
@@ -79,7 +79,7 @@ const ProductCard = (props: ProductCardProps) => {
                                 {formatPrice(product.price)}
                             </p>
                             <p className="text-lg font-bold text-yellow-900 dark:text-yellow-100">
-                                {formatPrice(product.priceOffer)}
+                                {product.priceOffer !== null ? formatPrice(product.priceOffer) : null}
                             </p>
                         </>
                     ) : (
