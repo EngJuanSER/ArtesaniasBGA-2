@@ -62,20 +62,20 @@ const ChooseCategory = () => {
               : `${process.env.NEXT_PUBLIC_BACKEND_URL}${category.mainImage?.url}`;
 
             return (
-              <Link
+                <Link
                 key={category.id}
                 href={`/category/${category.slug}`}
                 className="relative max-w-xs mx-auto overflow-hidden bg-no-repeat bg-cover rounded-lg"
-              >
+                >
                 <img
                   src={imageUrl}
                   alt={category.categoryName}
-                  className="max-w-[270px] transition duration-300 ease-in-out rounded-lg hover:scale-110"
+                  className="w-full h-full object-cover transition duration-300 ease-in-out rounded-lg hover:scale-110"
                 />
                 <p className="absolute w-full py-2 text-lg font-bold text-center text-white bottom-5 backdrop-blur-lg">
                   {category.categoryName}
                 </p>
-              </Link>
+                </Link>
             );
           })}
       </div>

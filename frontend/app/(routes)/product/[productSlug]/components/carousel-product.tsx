@@ -26,13 +26,13 @@ import {
         <Carousel>
           <CarouselContent>
             {images.data.map((image) => (
-              <CarouselItem key={image.id}>
+                <CarouselItem key={image.id}>
                 <img
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
+                  src={image.url.startsWith('http') ? image.url : `${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
                   alt="Image product"
-                  className="rounded-lg"
+                  className="rounded-lg w-full"
                 />
-              </CarouselItem>
+                </CarouselItem>
             ))}
           </CarouselContent>
           <CarouselPrevious />

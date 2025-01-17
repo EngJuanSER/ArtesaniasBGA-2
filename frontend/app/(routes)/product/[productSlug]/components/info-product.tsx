@@ -26,7 +26,7 @@ const InfoProduct = ({ product }: InfoProductProps) => {
             <span className="line-through text-gray-500 mr-2">
               {formatPrice(product.price)}
             </span>
-            {formatPrice(product.priceOffer)}
+            {product.priceOffer !== null ? formatPrice(product.priceOffer) : null}
           </span>
         ) : (
           formatPrice(product.price)
