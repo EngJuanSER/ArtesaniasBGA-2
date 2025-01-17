@@ -23,7 +23,7 @@ export async function fetchUserWishlist(): Promise<WishlistType | null> {
             ...item.product,
             images: item.product.images?.map((img: any) => ({
               ...img,
-              url: `${process.env.NEXT_PUBLIC_BACKEND_URL}${img.url}`
+              url: `${img.url}`
             })) || []
           }
         })) || []

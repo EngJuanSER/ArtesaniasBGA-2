@@ -99,6 +99,8 @@ export default function CartClient({ cart }: CartClientProps) {
     }
   };
 
+  console.log(cart);
+  
   return (
     <div className="space-y-8 w-5/6 items-center justify-center mx-auto">
       <h1 className="text-2xl font-bold text-primary">Mi Carrito</h1>

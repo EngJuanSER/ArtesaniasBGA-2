@@ -29,7 +29,7 @@ export async function fetchUserCart(): Promise<CartType | null> {
           priceOffer: item.product.priceOffer,
           images: item.product.images?.map((img: any) => ({
             ...img,
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}${img.url}`
+            url: `${img.url}`
           })) || []
         })) || []
       };
