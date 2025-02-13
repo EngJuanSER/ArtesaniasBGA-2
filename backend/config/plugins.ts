@@ -9,12 +9,6 @@ export default () => ({
                 directory: process.env.SUPABASE_DIRECTORY,
                 options: {}
             },
-            actionsOptions: {
-                upload: {},
-                uploadStream: {},	
-                delete: {},
-
-            }
         }
     }
 });
