@@ -18,5 +18,5 @@ export default {
    */
   bootstrap({ strapi }) {
     // Inicializar todos los procesadores
-    require('./bootstrap/processors')();
+    //require('./bootstrap/processors')();
   },};

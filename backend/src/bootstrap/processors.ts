@@ -1,3 +1,3 @@
-module.exports = () => {
-    require('../processors/report.processor')();
-  };
+//module.exports = () => {
+//    require('../processors/report.processor')();
+//  };
