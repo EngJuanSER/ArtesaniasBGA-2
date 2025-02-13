@@ -11,7 +11,7 @@ import {
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 semana
   path: "/",
-  domain: process.env.NODE_ENV === 'production' ? 'localhost' : '.app.github.dev',
+  domain: process.env.NODE_ENV === 'production' ? `.${new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:300').hostname}` : undefined,
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
 };
